@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".activity.HomeActivity">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab"
@@ -17,6 +16,7 @@
         app:tabGravity="fill"
         app:tabMode="fixed">
     </android.support.design.widget.TabLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_content"
         android:layout_below="@id/tab"
