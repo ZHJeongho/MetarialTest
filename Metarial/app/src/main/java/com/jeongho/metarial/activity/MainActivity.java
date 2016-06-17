@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         //初始化Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("骑行邦");
-        mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        //布局文件中 app:title
+        //mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         mToolbar.setOnMenuItemClickListener(this);
@@ -62,14 +63,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        //初始化MainFragment
         mMainFragment = new MainFragment();
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.add(R.id.fl_content, mMainFragment);
+        transaction.add(R.id.content_frame, mMainFragment);
         transaction.commit();
-
-
     }
 
 
@@ -106,36 +105,66 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = null;
+
+        if(mCollectFragment != null){
+            transaction.hide(mCollectFragment);
+        }
+        if(mAttentionFragment != null){
+            transaction.hide(mAttentionFragment);
+        }
+        if(mPostsFragment != null){
+            transaction.hide(mPostsFragment);
+        }
+        if(mSettingFragment != null){
+            transaction.hide(mSettingFragment);
+        }
+        if(mMainFragment != null){
+            transaction.hide(mMainFragment);
+        }
+
+
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            if (mMainFragment == null){
+                mMainFragment = new MainFragment();
+            }
+            fragment = mMainFragment;
+            mToolbar.setTitle("骑行邦");
         } else if (id == R.id.nav_collect) {
             if (mCollectFragment == null){
                 mCollectFragment = new MyCollectFragment();
-                fragment = mCollectFragment;
             }
+            fragment = mCollectFragment;
             mToolbar.setTitle("我的收藏");
         } else if (id == R.id.nav_attention) {
             if (mAttentionFragment == null){
                 mAttentionFragment = new MyAttentionFragment();
-                fragment = mAttentionFragment;
             }
+            fragment = mAttentionFragment;
             mToolbar.setTitle("我的关注");
         } else if (id == R.id.nav_posts) {
             if (mPostsFragment == null){
                 mPostsFragment = new MyPostsFragment();
-                fragment = mPostsFragment;
             }
+            fragment = mPostsFragment;
             mToolbar.setTitle("我的帖子");
         } else if (id == R.id.nav_night_mode) {
 
         } else if (id == R.id.nav_setting) {
             if (mSettingFragment == null){
                 mSettingFragment = new SettingFragment();
-                fragment = mSettingFragment;
             }
+            fragment = mSettingFragment;
             mToolbar.setTitle("设置");
         }
-        transaction.replace(R.id.fl_content, fragment);
+
+        if (fragment != null){
+            if (fragment.isAdded()){
+                transaction.show(fragment);
+            }else {
+                transaction.add(R.id.content_frame, fragment);
+            }
+        }
+
         transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
