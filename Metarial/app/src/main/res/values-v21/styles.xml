@@ -1,14 +1,17 @@
 <resources>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.Daytime">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!--
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        -->
+        <!-- appbar使用的颜色 -->
+        <item name="android:colorPrimary">?attr/colorPrimary</item>
+        <!-- 状态栏使用的颜色 -->
+        <item name="android:colorPrimaryDark">?attr/colorPrimaryDark</item>
+
+        <!-- 主题控件使用的颜色 -->
+        <item name="android:colorAccent">?attr/colorAccent</item>
     </style>
     <style name="ContentTabLayout" parent="Widget.Design.TabLayout">
         <item name="android:textStyle">bold</item>
