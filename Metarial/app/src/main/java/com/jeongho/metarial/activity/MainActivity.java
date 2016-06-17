@@ -2,12 +2,10 @@ package com.jeongho.metarial.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,41 +15,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jeongho.metarial.R;
-import com.jeongho.metarial.adapter.ContentFragmentAdapter;
-import com.jeongho.metarial.adapter.ContentPagerAdapter;
-import com.jeongho.metarial.fragment.DiscoveryFragment;
-import com.jeongho.metarial.fragment.HomeFragment;
+import com.jeongho.metarial.fragment.MainFragment;
 import com.jeongho.metarial.fragment.MyAttentionFragment;
 import com.jeongho.metarial.fragment.MyCollectFragment;
 import com.jeongho.metarial.fragment.MyPostsFragment;
-import com.jeongho.metarial.fragment.RideCycleFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Jeongho on 2016/6/16.
  */
-public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar mToolbar;
-    private TabLayout mTab;
-    private ViewPager mContentVp;
-    private ContentPagerAdapter mPagerAdapter;
-    private ContentFragmentAdapter mContentFragmentAdapter;
-
     private MyCollectFragment mCollectFragment;
     private MyAttentionFragment mAttentionFragment;
     private MyPostsFragment mPostsFragment;
     private SettingFragment mSettingFragment;
+    private MainFragment mMainFragment;
 
-    private int[] mLayoutIds = new int[]{R.layout.content_pager_1, R.layout.content_pager_2,
-            R.layout.content_pager_3};
+    private FragmentManager mFragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         initView();
     }
@@ -64,29 +51,6 @@ public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         mToolbar.setOnMenuItemClickListener(this);
-        //初始化ViewPager
-        mContentVp = (ViewPager) findViewById(R.id.vp_content);
-
-        List<String> titles = new LinkedList<>();
-        titles.add("首页");
-        titles.add("骑圈");
-        titles.add("发现");
-
-        List<Fragment> fragmentList = new LinkedList<>();
-        HomeFragment homeFragment = new HomeFragment();
-        RideCycleFragment rideCycleFragment = new RideCycleFragment();
-        DiscoveryFragment discoveryFragment = new DiscoveryFragment();
-
-        fragmentList.add(homeFragment);
-        fragmentList.add(rideCycleFragment);
-        fragmentList.add(discoveryFragment);
-
-        mContentFragmentAdapter = new ContentFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
-        mContentVp.setAdapter(mContentFragmentAdapter);
-
-        //TabLayout与ViewPager绑定
-        mTab = (TabLayout) findViewById(R.id.tab);
-        mTab.setupWithViewPager(mContentVp);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -97,6 +61,15 @@ public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        mMainFragment = new MainFragment();
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.add(R.id.fl_content, mMainFragment);
+        transaction.commit();
+
+
     }
 
 
@@ -131,8 +104,7 @@ public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = null;
         if (id == R.id.nav_home) {
             // Handle the camera action
@@ -141,16 +113,19 @@ public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 mCollectFragment = new MyCollectFragment();
                 fragment = mCollectFragment;
             }
+            mToolbar.setTitle("我的收藏");
         } else if (id == R.id.nav_attention) {
             if (mAttentionFragment == null){
                 mAttentionFragment = new MyAttentionFragment();
                 fragment = mAttentionFragment;
             }
+            mToolbar.setTitle("我的关注");
         } else if (id == R.id.nav_posts) {
             if (mPostsFragment == null){
                 mPostsFragment = new MyPostsFragment();
                 fragment = mPostsFragment;
             }
+            mToolbar.setTitle("我的帖子");
         } else if (id == R.id.nav_night_mode) {
 
         } else if (id == R.id.nav_setting) {
@@ -158,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 mSettingFragment = new SettingFragment();
                 fragment = mSettingFragment;
             }
+            mToolbar.setTitle("设置");
         }
         transaction.replace(R.id.fl_content, fragment);
         transaction.commit();
