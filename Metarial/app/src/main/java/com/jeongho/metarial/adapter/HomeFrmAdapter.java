@@ -26,6 +26,7 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
+        v.setPadding(20, 50, 20, 50);
         ViewHolder holder = new ViewHolder(v);
         return holder;
     }
