@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHolder>{
 
+    private RecyclerView mRecyclerView;
     private List<String> mTitles;
     public HomeFrmAdapter(List<String> list) {
         mTitles = list;
@@ -23,10 +24,10 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
-        v.setPadding(20, 50, 20, 50);
         ViewHolder holder = new ViewHolder(v);
         return holder;
     }

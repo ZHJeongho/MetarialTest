@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
 
-//    private Toolbar.OnMenuItemClickListener OnMenuItemClick = new Toolbar.OnMenuItemClickListener() {
-//        @Override
-//        public boolean onMenuItemClick(MenuItem item) {
-//            return false;
-//        }
-//    };
+    //    private Toolbar.OnMenuItemClickListener OnMenuItemClick = new Toolbar.OnMenuItemClickListener() {
+    //        @Override
+    //        public boolean onMenuItemClick(MenuItem item) {
+    //            return false;
+    //        }
+    //    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_notification:
                 Log.d("Menu", "notification");
                 break;
@@ -106,43 +106,43 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = null;
 
-        if(mCollectFragment != null){
+        if (mCollectFragment != null) {
             transaction.hide(mCollectFragment);
         }
-        if(mAttentionFragment != null){
+        if (mAttentionFragment != null) {
             transaction.hide(mAttentionFragment);
         }
-        if(mPostsFragment != null){
+        if (mPostsFragment != null) {
             transaction.hide(mPostsFragment);
         }
-        if(mSettingFragment != null){
+        if (mSettingFragment != null) {
             transaction.hide(mSettingFragment);
         }
-        if(mMainFragment != null){
+        if (mMainFragment != null) {
             transaction.hide(mMainFragment);
         }
 
 
         if (id == R.id.nav_home) {
-            if (mMainFragment == null){
+            if (mMainFragment == null) {
                 mMainFragment = new MainFragment();
             }
             fragment = mMainFragment;
             mToolbar.setTitle("骑行邦");
         } else if (id == R.id.nav_collect) {
-            if (mCollectFragment == null){
+            if (mCollectFragment == null) {
                 mCollectFragment = new MyCollectFragment();
             }
             fragment = mCollectFragment;
             mToolbar.setTitle("我的收藏");
         } else if (id == R.id.nav_attention) {
-            if (mAttentionFragment == null){
+            if (mAttentionFragment == null) {
                 mAttentionFragment = new MyAttentionFragment();
             }
             fragment = mAttentionFragment;
             mToolbar.setTitle("我的关注");
         } else if (id == R.id.nav_posts) {
-            if (mPostsFragment == null){
+            if (mPostsFragment == null) {
                 mPostsFragment = new MyPostsFragment();
             }
             fragment = mPostsFragment;
@@ -150,19 +150,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         } else if (id == R.id.nav_night_mode) {
 
         } else if (id == R.id.nav_setting) {
-            if (mSettingFragment == null){
+            if (mSettingFragment == null) {
                 mSettingFragment = new SettingFragment();
             }
             fragment = mSettingFragment;
             mToolbar.setTitle("设置");
         }
 
-        if (fragment != null){
-            if (fragment.isAdded()){
-                transaction.show(fragment);
-            }else {
-                transaction.add(R.id.content_frame, fragment);
-            }
+        if (null == fragment) {
+            return true;
+        }
+
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.content_frame, fragment);
         }
 
         transaction.commit();
