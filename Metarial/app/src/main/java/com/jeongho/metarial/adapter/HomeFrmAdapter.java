@@ -17,29 +17,79 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
 
     private RecyclerView mRecyclerView;
     private List<String> mTitles;
+    private View mHeaderView;
+    private View mFooterView;
+
+    private final static int TYPE_HEADER = 1;
+    private final static int TYPE_FOOTER = 2;
+    private final static int TYPE_CONTENT = 3;
+
     public HomeFrmAdapter(List<String> list) {
         mTitles = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        ViewHolder holder = null;
+        int viewId = 0;
+        View v = null;
+        switch (viewType){
+            case TYPE_HEADER:
+                v = mHeaderView;
+                break;
+            case TYPE_FOOTER:
+                v = mFooterView;
+                break;
+            case TYPE_CONTENT:
+                viewId = R.layout.item;
+                v = LayoutInflater.from(parent.getContext()).inflate(viewId, parent, false);
+                break;
+        }
 
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
-        ViewHolder holder = new ViewHolder(v);
+        holder = new ViewHolder(v);
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mTitles.get(position));
+        if (position != 0 && position != getItemCount() - 1){
+            holder.mTextView.setText(mTitles.get(position));
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return mTitles.size();
+    }
+
+
+    public void setHeaderView(View headerView){
+        mHeaderView = headerView;
+    }
+
+    public void setFooterView(View footerView){
+        mFooterView = footerView;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mHeaderView == null && mFooterView == null){
+            return TYPE_CONTENT;
+        }
+
+        if (mHeaderView != null && position == 0){
+            return TYPE_HEADER;
+        }
+
+        if (mFooterView != null && position == getItemCount() - 1){
+            return TYPE_FOOTER;
+        }
+        return TYPE_CONTENT;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

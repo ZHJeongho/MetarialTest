@@ -22,7 +22,7 @@ import java.util.LinkedList;
  */
 public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private HomeFrmAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private SwipeRefreshLayout mRefreshLayout;
@@ -40,6 +40,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             list.add("galigeigei" + i);
         }
         mAdapter = new HomeFrmAdapter(list);
+        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_header, mRecyclerView, false);
+        mAdapter.setHeaderView(headerView);
+        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer, mRecyclerView, false);
+        mAdapter.setHeaderView(footerView);
         mRecyclerView.setAdapter(mAdapter);
 
         mRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.home_swipe_refresh);
