@@ -3,9 +3,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/top_vp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:text="header"/>
+        android:layout_height="200dp">
+    </android.support.v4.view.ViewPager>
 </LinearLayout>

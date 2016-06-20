@@ -1,6 +1,7 @@
 package com.jeongho.metarial.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("HomeFrmAdapter", "onCreateViewHolder");
         ViewHolder holder = null;
         int viewId = 0;
         View v = null;
@@ -56,28 +58,45 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position != 0 && position != getItemCount() - 1){
-            holder.mTextView.setText(mTitles.get(position));
+        Log.d("HomeFrmAdapter", "onBindViewHolder");
+        switch (getItemViewType(position)){
+            case TYPE_CONTENT:
+                holder.mTextView.setText(mTitles.get(position - 1));
+                return;
+            case TYPE_FOOTER:
+                return;
+            case TYPE_HEADER:
+                return;
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return mTitles.size();
+        if (mHeaderView == null && mFooterView == null){
+            return mTitles.size();
+        }else if (mHeaderView != null && mFooterView == null){
+            return mTitles.size() + 1;
+        }else if (mHeaderView == null && mFooterView != null){
+            return mTitles.size() + 1;
+        }else{
+            return mTitles.size() + 2;
+        }
     }
 
 
     public void setHeaderView(View headerView){
         mHeaderView = headerView;
+        notifyItemInserted(0);
     }
 
     public void setFooterView(View footerView){
         mFooterView = footerView;
+        notifyItemChanged(getItemCount() - 1);
     }
 
     @Override
     public int getItemViewType(int position) {
+        Log.d("HomeFrmAdapter", "getItemViewType");
         if (mHeaderView == null && mFooterView == null){
             return TYPE_CONTENT;
         }
@@ -96,6 +115,12 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
         public TextView mTextView;
         public ViewHolder(View itemView) {
             super(itemView);
+            if (itemView == mHeaderView){
+                return;
+            }
+            if (itemView == mFooterView){
+                return;
+            }
             mTextView = (TextView) itemView.findViewById(R.id.item_tv);
         }
     }
