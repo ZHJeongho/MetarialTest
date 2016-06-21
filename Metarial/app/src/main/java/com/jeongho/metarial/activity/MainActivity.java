@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.fragment.MainFragment;
@@ -176,12 +177,26 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         return true;
     }
 
+<<<<<<< HEAD
+=======
+    private long firstBackTime;
+>>>>>>> JeonghoWin_v7
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:
                 if (mNavigationView.isShown()){
                     mDrawerLayout.closeDrawer(GravityCompat.START);
+<<<<<<< HEAD
+=======
+                }else {
+                    if (System.currentTimeMillis() - firstBackTime > 2000){
+                        Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                        firstBackTime = System.currentTimeMillis();
+                    }else {
+                        this.finish();
+                    }
+>>>>>>> JeonghoWin_v7
                 }
                 break;
         }
