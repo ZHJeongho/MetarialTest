@@ -16,7 +16,9 @@ public class LoginPresenterCompl implements ILoginPresenter{
     @Override
     public void login(String userName, String pwd) {
         if (userName.equals("123") && pwd.equals("123")){
-            mILoginView.signInSuccess();
+            mILoginView.onLoginResult(true);
+        }else {
+            mILoginView.onLoginResult(false);
         }
     }
 }

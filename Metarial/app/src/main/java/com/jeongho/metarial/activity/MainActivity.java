@@ -1,5 +1,6 @@
 package com.jeongho.metarial.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.jeongho.metarial.R;
@@ -22,11 +24,14 @@ import com.jeongho.metarial.fragment.MyAttentionFragment;
 import com.jeongho.metarial.fragment.MyCollectFragment;
 import com.jeongho.metarial.fragment.MyPostsFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
+import com.jeongho.metarial.login.view.LoginActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Jeongho on 2016/6/16.
  */
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Toolbar mToolbar;
     private MyCollectFragment mCollectFragment;
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private NavigationView mNavigationView;
     private FragmentManager mFragmentManager;
     private DrawerLayout mDrawerLayout;
+
+    private CircleImageView mPortraitCiv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        View naviHeader = mNavigationView.getHeaderView(0);
+        mPortraitCiv = (CircleImageView) naviHeader.findViewById(R.id.civ_portrait);
+        mPortraitCiv.setOnClickListener(this);
         //初始化MainFragment
         mMainFragment = new MainFragment();
         mFragmentManager = getSupportFragmentManager();
@@ -127,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
 
+        if (id == R.id.civ_portrait){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
         if (id == R.id.nav_home) {
             if (mMainFragment == null) {
                 mMainFragment = new MainFragment();
@@ -177,18 +191,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         return true;
     }
 
-<<<<<<< HEAD
-=======
     private long firstBackTime;
->>>>>>> JeonghoWin_v7
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:
                 if (mNavigationView.isShown()){
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-<<<<<<< HEAD
-=======
                 }else {
                     if (System.currentTimeMillis() - firstBackTime > 2000){
                         Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -196,10 +205,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                     }else {
                         this.finish();
                     }
->>>>>>> JeonghoWin_v7
                 }
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.civ_portrait:
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

@@ -13,6 +13,7 @@
               android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_portrait"
         android:layout_width="72dp"
         android:layout_height="72dp"
         app:civ_border_color="@color/icons"
