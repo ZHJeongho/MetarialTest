@@ -11,8 +11,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.fragment.MainFragment;
@@ -33,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private SettingFragment mSettingFragment;
     private MainFragment mMainFragment;
 
+    private NavigationView mNavigationView;
     private FragmentManager mFragmentManager;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +58,14 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mToolbar.setOnMenuItemClickListener(this);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         //初始化MainFragment
         mMainFragment = new MainFragment();
@@ -169,8 +173,27 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
         transaction.commit();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private long firstBackTime;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                if (mNavigationView.isShown()){
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                }else {
+                    if (System.currentTimeMillis() - firstBackTime > 2000){
+                        Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                        firstBackTime = System.currentTimeMillis();
+                    }else {
+                        this.finish();
+                    }
+                }
+                break;
+        }
+        return false;
     }
 }
