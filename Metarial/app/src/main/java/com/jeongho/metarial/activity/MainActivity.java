@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        initView(savedInstanceState);
     }
 
-    private void initView() {
+    private void initView(Bundle savedInstanceState) {
         //初始化Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("骑行邦");
@@ -78,6 +78,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mPortraitCiv = (CircleImageView) naviHeader.findViewById(R.id.civ_portrait);
         mPortraitCiv.setOnClickListener(this);
         //初始化MainFragment
+
+        if (savedInstanceState != null){
+            return;
+        }
+
         mMainFragment = new MainFragment();
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -146,25 +151,25 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 mMainFragment = new MainFragment();
             }
             fragment = mMainFragment;
-            mToolbar.setTitle("骑行邦");
+            mToolbar.setTitle(getResources().getString(R.string.app_name));
         } else if (id == R.id.nav_collect) {
             if (mCollectFragment == null) {
                 mCollectFragment = new MyCollectFragment();
             }
             fragment = mCollectFragment;
-            mToolbar.setTitle("我的收藏");
+            mToolbar.setTitle(getResources().getString(R.string.nav_collect));
         } else if (id == R.id.nav_attention) {
             if (mAttentionFragment == null) {
                 mAttentionFragment = new MyAttentionFragment();
             }
             fragment = mAttentionFragment;
-            mToolbar.setTitle("我的关注");
+            mToolbar.setTitle(getResources().getString(R.string.nav_attention));
         } else if (id == R.id.nav_posts) {
             if (mPostsFragment == null) {
                 mPostsFragment = new MyPostsFragment();
             }
             fragment = mPostsFragment;
-            mToolbar.setTitle("我的帖子");
+            mToolbar.setTitle(getResources().getString(R.string.nav_posts));
         } else if (id == R.id.nav_night_mode) {
 
         } else if (id == R.id.nav_setting) {
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 mSettingFragment = new SettingFragment();
             }
             fragment = mSettingFragment;
-            mToolbar.setTitle("设置");
+            mToolbar.setTitle(getResources().getString(R.string.nav_setting));
         }
 
         if (null == fragment) {
