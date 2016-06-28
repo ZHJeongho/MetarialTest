@@ -1,5 +1,6 @@
 package com.jeongho.metarial.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.jeongho.metarial.R;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ import java.util.List;
 public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHolder>{
 
     private RecyclerView mRecyclerView;
+    private Context mContext;
     private List<String> mTitles;
     private View mHeaderView;
     private View mFooterView;
@@ -25,13 +28,13 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
     private final static int TYPE_FOOTER = 2;
     private final static int TYPE_CONTENT = 3;
 
-    public HomeFrmAdapter(List<String> list) {
+    public HomeFrmAdapter(Context context, List<String> list) {
+        mContext = context;
         mTitles = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("HomeFrmAdapter", "onCreateViewHolder");
         ViewHolder holder = null;
         int viewId = 0;
         View v = null;
@@ -44,7 +47,7 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
                 break;
             case TYPE_CONTENT:
                 viewId = R.layout.item;
-                v = LayoutInflater.from(parent.getContext()).inflate(viewId, parent, false);
+                v = LayoutInflater.from(mContext).inflate(viewId, parent, false);
                 break;
         }
 
@@ -58,7 +61,6 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("HomeFrmAdapter", "onBindViewHolder");
         switch (getItemViewType(position)){
             case TYPE_CONTENT:
                 holder.mTextView.setText(mTitles.get(position - 1));
@@ -84,11 +86,19 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
     }
 
 
+    /**
+     * 设置头布局
+     * @param headerView
+     */
     public void setHeaderView(View headerView){
         mHeaderView = headerView;
         notifyItemInserted(0);
     }
 
+    /**
+     * 设置底部布局
+     * @param footerView
+     */
     public void setFooterView(View footerView){
         mFooterView = footerView;
         notifyItemChanged(getItemCount() - 1);
@@ -123,5 +133,19 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
             }
             mTextView = (TextView) itemView.findViewById(R.id.item_tv);
         }
+    }
+
+    public void addRefreshBeans(List<String> refreshBeans){
+        List<String> temp = new LinkedList<>();
+        temp.addAll(refreshBeans);
+        temp.addAll(mTitles);
+        mTitles.removeAll(mTitles);
+        mTitles.addAll(temp);
+        notifyDataSetChanged();
+    }
+
+    public void addMoreBeans(List<String> moreBeans){
+        mTitles.addAll(moreBeans);
+        notifyDataSetChanged();
     }
 }

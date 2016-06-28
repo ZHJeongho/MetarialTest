@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,16 +21,21 @@ import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Jeongho on 16/6/16.
  */
-public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private RecyclerView mRecyclerView;
     private HomeFrmAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private SwipeRefreshLayout mRefreshLayout;
+    /**
+     * recyclerView显示的最后一个item的position
+     */
+    private int mLastItemPosition;
 
     @Nullable
     @Override
@@ -44,7 +50,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         for (int i = 0 ; i < 50; i++) {
             list.add("galigeigei" + i);
         }
-        mAdapter = new HomeFrmAdapter(list);
+        mAdapter = new HomeFrmAdapter(getActivity(), list);
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_header, mRecyclerView, false);
 
         //初始化ViewPager
@@ -72,6 +78,20 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.home_swipe_refresh);
         mRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mLastItemPosition = mLayoutManager
+            }
+        });
         return v;
     }
 
@@ -83,6 +103,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                List<String> list = new LinkedList<String>();
+                for (int i = 0; i < 5; i++){
+                    list.add("GG simida" + i);
+                }
+                mAdapter.addRefreshBeans(list);
                 mRefreshLayout.setRefreshing(false);
                 Toast.makeText(getContext(), "haha", Toast.LENGTH_SHORT).show();
             }
