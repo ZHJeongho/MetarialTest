@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
+import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,12 +30,14 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView mRecyclerView;
     private HomeFrmAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private GridLayoutManager mGridLayoutManager;
     private SwipeRefreshLayout mRefreshLayout;
     /**
      * recyclerView显示的最后一个item的position
      */
     private int mLastItemPosition;
+
+    private boolean isMoreLoading = false;
 
     @Nullable
     @Override
@@ -44,7 +46,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.home_rv);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mGridLayoutManager = new GridLayoutManager(getActivity(), 1);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
         //初始化cardView
         LinkedList<String> list = new LinkedList<>();
         for (int i = 0 ; i < 50; i++) {
@@ -82,14 +86,32 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        mLastItemPosition + 1 == mAdapter.getItemCount()){
+                    if (!isMoreLoading){
+                        isMoreLoading = true;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //上拉加载
+                                List<String> list = new LinkedList<String>();
+                                for (int i = 0; i < 5; i++){
+                                    list.add("GG simida" + i);
+                                }
+                                mAdapter.addMoreBeans(list);
 
-
+                                ToastUtil.showShort(getContext(), "Asd");
+                                isMoreLoading = false;
+                            }
+                        }, 2000);
+                    }
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                mLastItemPosition = mLayoutManager
+                mLastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
             }
         });
         return v;
@@ -109,7 +131,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
                 mAdapter.addRefreshBeans(list);
                 mRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(), "haha", Toast.LENGTH_SHORT).show();
+                ToastUtil.showShort(getContext(), "haha");
             }
         }, 2000);
     }
