@@ -12,4 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="show trace"/>
+    <Button
+        android:id="@+id/btn_start_ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start ride"/>
+    <Button
+        android:id="@+id/btn_stop_ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop ride"/>
 </LinearLayout>

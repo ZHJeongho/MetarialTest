@@ -16,6 +16,8 @@ import com.jeongho.metarial.service.RideService;
  */
 public class RideInfoActivity extends AppCompatActivity implements View.OnClickListener {
     private Button mShowTraceBtn;
+    private Button mStartRideBtn;
+    private Button mStopRideBtn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +25,11 @@ public class RideInfoActivity extends AppCompatActivity implements View.OnClickL
 
         mShowTraceBtn = (Button) findViewById(R.id.btn_show_trace);
         mShowTraceBtn.setOnClickListener(this);
+        mStartRideBtn = (Button) findViewById(R.id.btn_start_ride);
+        mStartRideBtn.setOnClickListener(this);
+        mStopRideBtn = (Button) findViewById(R.id.btn_stop_ride);
+        mStopRideBtn.setOnClickListener(this);
 
-        Intent intent = new Intent(this, RideService.class);
-        startService(intent);
     }
 
     public static void startAction(Context context) {
@@ -36,9 +40,16 @@ public class RideInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case  R.id.btn_show_trace:
+            case R.id.btn_show_trace:
                 RideTraceActivity.startAction(this);
                 break;
+            case R.id.btn_start_ride:
+                Intent intent = new Intent(this, RideService.class);
+                startService(intent);
+                break;
+            case R.id.btn_stop_ride:
+                Intent intent1 = new Intent(this, RideService.class);
+                stopService(intent1);
         }
     }
 }
