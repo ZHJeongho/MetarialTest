@@ -12,4 +12,8 @@
     <string name="nav_attention">我的关注</string>
     <string name="nav_posts">我的帖子</string>
     <string name="nav_setting">设置</string>
+    <string name="maintenance">保养</string>
+    <string name="dry">干货</string>
+    <string name="guide">攻略</string>
+    <string name="news">新闻</string>
 </resources>

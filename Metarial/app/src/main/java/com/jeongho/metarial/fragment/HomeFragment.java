@@ -1,5 +1,6 @@
 package com.jeongho.metarial.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,19 +10,25 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
+import com.jeongho.metarial.bean.HomeTopNewsBean;
 import com.jeongho.qxblibrary.Utils.ToastUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by Jeongho on 16/6/16.
@@ -38,6 +45,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mLastItemPosition;
 
     private boolean isMoreLoading = false;
+
+    private HomeTopNewsBean mHomeTopNewsBean;
+    private ContentPagerAdapter mCpa;
+    private ViewPager mTopVp;
 
     @Nullable
     @Override
@@ -58,21 +69,21 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_header, mRecyclerView, false);
 
         //初始化ViewPager
-        ViewPager topVp = (ViewPager) headerView.findViewById(R.id.top_vp);
+        mTopVp = (ViewPager) headerView.findViewById(R.id.top_vp);
 
-        LinkedList<View> views = new LinkedList<>();
-        LinkedList<String> titles = new LinkedList<>();
-        for (int i = 0; i < 4; i++){
-            ImageView iv = new ImageView(getContext());
-            iv.setImageResource(R.drawable.card_bg);
-            iv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            iv.setScaleType(ImageView.ScaleType.FIT_XY);
-            views.add(iv);
-            titles.add(i + "");
-        }
+//        LinkedList<View> views = new LinkedList<>();
+//        LinkedList<String> titles = new LinkedList<>();
+//        for (int i = 0; i < 4; i++){
+//            ImageView iv = new ImageView(getContext());
+//            iv.setImageResource(R.drawable.card_bg);
+//            iv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+//            views.add(iv);
+//            titles.add(i + "");
+//        }
 
-        ContentPagerAdapter cpa = new ContentPagerAdapter(views, titles);
-        topVp.setAdapter(cpa);
+        //mCpa = new ContentPagerAdapter(views, titles);
+        mTopVp.setAdapter(mCpa);
 
         //recycleView加头布局 尾布局
         mAdapter.setHeaderView(headerView);
@@ -114,7 +125,54 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mLastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
             }
         });
+
+
+
+        String url = "http://139.129.117.90/qxb_back/json/homepage.json";
+        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.d("onError", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("ok", response);
+                Gson gson = new Gson();
+                mHomeTopNewsBean = gson.fromJson(response, HomeTopNewsBean.class);
+                initTopNews();
+            }
+        });
         return v;
+    }
+
+    private void initTopNews() {
+        //mCpa.refresh();
+
+        final List<Bitmap> bitmapList = new LinkedList<>();
+        List<String> titleList = new LinkedList<>();
+        for (int i = 0; i < mHomeTopNewsBean.homePage.size(); i++){
+            titleList.add(mHomeTopNewsBean.homePage.get(i).getTitle());
+            OkHttpUtils
+                    .get()
+                    .url(mHomeTopNewsBean.homePage.get(i).getLogo())
+                    .build()
+                    .execute(new BitmapCallback()
+                    {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Bitmap response, int id) {
+                            bitmapList.add(response);
+                        }
+                    });
+        }
+
+        mCpa = new ContentPagerAdapter(getContext(), bitmapList, titleList);
+        mTopVp.setAdapter(mCpa);
     }
 
     /**

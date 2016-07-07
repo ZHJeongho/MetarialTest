@@ -56,18 +56,18 @@ public class RideService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //实例化轨迹服务客户端
-        client = new LBSTraceClient(getApplicationContext());
+                client = new LBSTraceClient(getApplicationContext());
         //鹰眼服务ID
-        long serviceId  = 117158;
+        long serviceId  = 120372;
         //entity标识
-        String entityName = "qxb";
+        String entityName = "QxbTest";
         //轨迹服务类型（0 : 不上传位置数据，也不接收报警信息； 1 : 不上传位置数据，但接收报警信息；2 : 上传位置数据，且接收报警信息）
         int  traceType = 2;
         //实例化轨迹服务
         trace = new Trace(getApplicationContext(), serviceId, entityName, traceType);
 
         // 设置http请求协议类型0:http,1:https
-        client.setProtocolType(0);
+        client.setProtocolType(1);
 
         // 设置定位模式
         client.setLocationMode(LocationMode.High_Accuracy);
@@ -118,5 +118,13 @@ public class RideService extends Service{
         public List<String> getPointList(){
             return mList;
         }
+    }
+
+    public void getEntityList(){
+        //client.queryEntityList();
+    }
+
+    public void getReatimeLoc(){
+        //client.queryRealtimeLoc();
     }
 }
