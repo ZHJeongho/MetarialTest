@@ -146,10 +146,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
+    private List<Bitmap> mBitmapList;
     private void initTopNews() {
         //mCpa.refresh();
 
-        final List<Bitmap> bitmapList = new LinkedList<>();
         List<String> titleList = new LinkedList<>();
         for (int i = 0; i < mHomeTopNewsBean.homePage.size(); i++){
             titleList.add(mHomeTopNewsBean.homePage.get(i).getTitle());
@@ -166,12 +166,14 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                         @Override
                         public void onResponse(Bitmap response, int id) {
-                            bitmapList.add(response);
+                            //子线程执行  下面bitmapList为null
+                            //TODO:修改
+                            mBitmapList.add(response);
                         }
                     });
         }
 
-        mCpa = new ContentPagerAdapter(getContext(), bitmapList, titleList);
+        mCpa = new ContentPagerAdapter(getContext(), mBitmapList, titleList);
         mTopVp.setAdapter(mCpa);
     }
 
