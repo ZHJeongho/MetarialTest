@@ -59,6 +59,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.RideInfoActivity"/>
         <activity android:name=".activity.RideTraceActivity"/>
+        <activity android:name=".activity.DiscoveryDetailsAty"/>
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"

@@ -1,6 +1,7 @@
 package com.jeongho.metarial.fragment;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.jeongho.metarial.R;
@@ -50,6 +52,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ContentPagerAdapter mCpa;
     private ViewPager mTopVp;
 
+    private List<View> mViewList = new LinkedList<>();
+    private List<String> mTitleList = new LinkedList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,18 +76,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //初始化ViewPager
         mTopVp = (ViewPager) headerView.findViewById(R.id.top_vp);
 
-//        LinkedList<View> views = new LinkedList<>();
-//        LinkedList<String> titles = new LinkedList<>();
-//        for (int i = 0; i < 4; i++){
-//            ImageView iv = new ImageView(getContext());
-//            iv.setImageResource(R.drawable.card_bg);
-//            iv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//            iv.setScaleType(ImageView.ScaleType.FIT_XY);
-//            views.add(iv);
-//            titles.add(i + "");
-//        }
-
-        //mCpa = new ContentPagerAdapter(views, titles);
         mTopVp.setAdapter(mCpa);
 
         //recycleView加头布局 尾布局
@@ -146,13 +139,18 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
-    private List<Bitmap> mBitmapList;
-    private void initTopNews() {
-        //mCpa.refresh();
 
-        List<String> titleList = new LinkedList<>();
+    private void initTopNews() {
+
+        mCpa = new ContentPagerAdapter(mViewList, mTitleList);
+        mTopVp.setAdapter(mCpa);
+
         for (int i = 0; i < mHomeTopNewsBean.homePage.size(); i++){
-            titleList.add(mHomeTopNewsBean.homePage.get(i).getTitle());
+
+            mTitleList.add(mHomeTopNewsBean.homePage.get(i).getTitle());
+            final View view = LayoutInflater.from(getContext()).inflate(R.layout.item_top_vp, null);
+            final ImageView iv = (ImageView) view.findViewById(R.id.iv);
+
             OkHttpUtils
                     .get()
                     .url(mHomeTopNewsBean.homePage.get(i).getLogo())
@@ -161,20 +159,23 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-
+                            //可能存在没有返回bitmap的情况
+                            //TODO：设置iv为默认图片  在xml中即可
+                            Log.e("onError", e.getMessage());
+                            mViewList.add(view);
+                            mCpa.notifyDataSetChanged();
                         }
 
                         @Override
                         public void onResponse(Bitmap response, int id) {
                             //子线程执行  下面bitmapList为null
-                            //TODO:修改
-                            mBitmapList.add(response);
+                            iv.setImageBitmap(response);
+                            mViewList.add(view);
+                            mCpa.notifyDataSetChanged();
                         }
                     });
         }
 
-        mCpa = new ContentPagerAdapter(getContext(), mBitmapList, titleList);
-        mTopVp.setAdapter(mCpa);
     }
 
     /**
@@ -194,5 +195,25 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 ToastUtil.showShort(getContext(), "haha");
             }
         }, 2000);
+    }
+
+    class LoadBitmapTask extends AsyncTask<HomeTopNewsBean,Integer, List<Bitmap>>{
+
+        @Override
+        protected List<Bitmap> doInBackground(HomeTopNewsBean... params) {
+            return null;
+        }
+
+        //任务执行前调用
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        //返回结果，UI操作
+        @Override
+        protected void onPostExecute(List<Bitmap> bitmaps) {
+            super.onPostExecute(bitmaps);
+        }
     }
 }

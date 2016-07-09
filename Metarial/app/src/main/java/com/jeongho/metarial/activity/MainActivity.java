@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private void initView(Bundle savedInstanceState) {
         //初始化Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("骑行邦");
+        mToolbar.setTitle(R.string.app_name);
         //布局文件中 app:title
         //mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(mToolbar);
