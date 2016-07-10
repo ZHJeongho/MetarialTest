@@ -16,4 +16,8 @@
     <string name="dry">干货</string>
     <string name="guide">攻略</string>
     <string name="news">新闻</string>
+    <string name="speed">时速</string>
+    <string name="distance">里程</string>
+    <string name="ride_time">时间</string>
+    <string name="average_speed">均速</string>
 </resources>

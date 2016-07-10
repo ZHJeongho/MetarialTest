@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class RideService extends Service{
 
+    private static final String TAG = "RideService";
+
     private RideBinder mRideBinder = new RideBinder();
 
     private List<String> mList = new LinkedList<>();
@@ -40,6 +42,7 @@ public class RideService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate");
         mList.add("aaa");
         mList.add("aab");
         mList.add("aac");
@@ -54,11 +57,11 @@ public class RideService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Log.d(TAG, "onStartCommand");
         //实例化轨迹服务客户端
-                client = new LBSTraceClient(getApplicationContext());
+        client = new LBSTraceClient(getApplicationContext());
         //鹰眼服务ID
-        long serviceId  = 120372;
+        long serviceId = 120566;
         //entity标识
         String entityName = "QxbTest";
         //轨迹服务类型（0 : 不上传位置数据，也不接收报警信息； 1 : 不上传位置数据，但接收报警信息；2 : 上传位置数据，且接收报警信息）
@@ -97,6 +100,7 @@ public class RideService extends Service{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
         //实例化停止轨迹服务回调接口
         OnStopTraceListener stopTraceListener = new OnStopTraceListener(){
             // 轨迹服务停止成功
@@ -111,7 +115,10 @@ public class RideService extends Service{
         };
 
         //停止轨迹服务
-        client.stopTrace(trace,stopTraceListener);
+        if (client != null){
+            client.stopTrace(trace,stopTraceListener);
+        }
+
     }
 
     public class RideBinder extends Binder{
