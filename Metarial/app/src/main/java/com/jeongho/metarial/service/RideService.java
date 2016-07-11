@@ -32,7 +32,7 @@ public class RideService extends Service{
     //鹰眼客户端
     private LBSTraceClient client;
     //轨迹服务
-    private Trace trace;
+    private Trace mTrace;
 
     //鹰眼服务ID
     private long mServerId = 120566;
@@ -44,6 +44,10 @@ public class RideService extends Service{
     private String mEntityName;
 
     private OnGetEntityList mOnGetEntityList;
+
+    private OnStartTraceListener mOnStartTraceListener;
+    private OnStopTraceListener mOnStopTraceListener;
+    private OnEntityListener mOnEntityListener;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -70,27 +74,61 @@ public class RideService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
         mActiveTime = (int) (System.currentTimeMillis() / 1000 - 12 * 60 * 60);
 
-        Log.d(TAG, "onStartCommand");
-        //实例化轨迹服务客户端
-        client = new LBSTraceClient(getApplicationContext());
+        initClient();
+        initListener();
 
-        //entity标识
-        mEntityName = "QxbTest";
-        //轨迹服务类型（0 : 不上传位置数据，也不接收报警信息； 1 : 不上传位置数据，但接收报警信息；2 : 上传位置数据，且接收报警信息）
-        int  traceType = 2;
-        //实例化轨迹服务
-        trace = new Trace(getApplicationContext(), mServerId, mEntityName, traceType);
+        startTrace();
+        return super.onStartCommand(intent, flags, startId);
+    }
 
-        // 设置http请求协议类型0:http,1:https
-        client.setProtocolType(1);
+    private void startTrace() {
+        if (client != null){
+            client.startTrace(mTrace);
+        }
+    }
 
-        // 设置定位模式
-        client.setLocationMode(LocationMode.High_Accuracy);
+    private void initListener() {
+        //初始化开启轨迹服务监听
+        initOnStartTraceListener();
+        //初始化停止轨迹服务监听
+        initOnStopTraceListener();
+        //初始化查询轨迹服务监听
+        initOnEntityListener();
+    }
 
-        client.setInterval(2, 10);
+    private void initOnEntityListener() {
+        mOnEntityListener = new OnEntityListener() {
+            @Override
+            public void onRequestFailedCallback(String s) {
 
-        //实例化开启轨迹服务回调接口
-        OnStartTraceListener startTraceListener = new OnStartTraceListener() {
+            }
+
+            @Override
+            public void onQueryEntityListCallback(String s) {
+                System.out.println("entity回调接口消息 : " + s);
+                //mOnGetEntityList.parseEntityList(s);
+            }
+        };
+    }
+
+    private void initOnStopTraceListener() {
+        //实例化停止轨迹服务回调接口
+        mOnStopTraceListener = new OnStopTraceListener(){
+            // 轨迹服务停止成功
+            @Override
+            public void onStopTraceSuccess() {
+                Log.d("stop", "Success");
+            }
+            // 轨迹服务停止失败（arg0 : 错误编码，arg1 : 消息内容，详情查看类参考）
+            @Override
+            public void onStopTraceFailed(int arg0, String arg1) {
+            }
+        };
+    }
+
+    private void initOnStartTraceListener() {
+        //开启轨迹服务
+        mOnStartTraceListener = new OnStartTraceListener() {
             //开启轨迹服务回调接口（arg0 : 消息编码，arg1 : 消息内容，详情查看类参考）
             @Override
             public void onTraceCallback(int arg0, String arg1) {
@@ -102,35 +140,37 @@ public class RideService extends Service{
                 Log.d("onTracePushCallback", arg1);
             }
         };
+    }
 
-        //开启轨迹服务
-        client.startTrace(trace, startTraceListener);
+    private void initClient() {
+        //实例化轨迹服务客户端
+        client = new LBSTraceClient(getApplicationContext());
 
-        return super.onStartCommand(intent, flags, startId);
+        //entity标识
+        mEntityName = "QxbTest";
+        //轨迹服务类型（0 : 不上传位置数据，也不接收报警信息； 1 : 不上传位置数据，但接收报警信息；2 : 上传位置数据，且接收报警信息）
+        int  traceType = 2;
+        //实例化轨迹服务
+        mTrace = new Trace(getApplicationContext(), mServerId, mEntityName, traceType);
+
+        // 设置http请求协议类型0:http,1:https
+        client.setProtocolType(1);
+
+        // 设置定位模式
+        client.setLocationMode(LocationMode.High_Accuracy);
+        //打包周期10s 采集周期2s
+        client.setInterval(2, 10);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        //实例化停止轨迹服务回调接口
-        OnStopTraceListener stopTraceListener = new OnStopTraceListener(){
-            // 轨迹服务停止成功
-            @Override
-            public void onStopTraceSuccess() {
-                Log.d("stop", "Success");
-            }
-            // 轨迹服务停止失败（arg0 : 错误编码，arg1 : 消息内容，详情查看类参考）
-            @Override
-            public void onStopTraceFailed(int arg0, String arg1) {
-            }
-        };
 
         //停止轨迹服务
         if (client != null){
-            client.stopTrace(trace,stopTraceListener);
+            client.stopTrace(mTrace, mOnStopTraceListener);
         }
-
     }
 
     public class RideBinder extends Binder{
@@ -144,18 +184,7 @@ public class RideService extends Service{
     }
 
     public void getEntityList(){
-        OnEntityListener onEntityListener = new OnEntityListener() {
-            @Override
-            public void onRequestFailedCallback(String s) {
 
-            }
-
-            @Override
-            public void onQueryEntityListCallback(String s) {
-                System.out.println("entity回调接口消息 : " + s);
-                mOnGetEntityList.parseEntityList(s);
-            }
-        };
         client.queryEntityList(mServerId, mEntityName, null,
                 mReturnType, mActiveTime, 1000, 1, onEntityListener);
     }
