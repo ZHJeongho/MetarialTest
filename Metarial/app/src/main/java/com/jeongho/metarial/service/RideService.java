@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.LocationMode;
+import com.baidu.trace.OnEntityListener;
 import com.baidu.trace.OnStartTraceListener;
 import com.baidu.trace.OnStopTraceListener;
 import com.baidu.trace.Trace;
@@ -28,11 +29,21 @@ public class RideService extends Service{
     private RideBinder mRideBinder = new RideBinder();
 
     private List<String> mList = new LinkedList<>();
-
+    //鹰眼客户端
     private LBSTraceClient client;
-
+    //轨迹服务
     private Trace trace;
 
+    //鹰眼服务ID
+    private long mServerId = 120566;
+    //返回结果的类型（0 : 返回全部结果，1 : 只返回entityName的列表）
+    private int mReturnType = 0;
+
+    private int mActiveTime;
+
+    private String mEntityName;
+
+    private OnGetEntityList mOnGetEntityList;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -57,17 +68,18 @@ public class RideService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mActiveTime = (int) (System.currentTimeMillis() / 1000 - 12 * 60 * 60);
+
         Log.d(TAG, "onStartCommand");
         //实例化轨迹服务客户端
         client = new LBSTraceClient(getApplicationContext());
-        //鹰眼服务ID
-        long serviceId = 120566;
+
         //entity标识
-        String entityName = "QxbTest";
+        mEntityName = "QxbTest";
         //轨迹服务类型（0 : 不上传位置数据，也不接收报警信息； 1 : 不上传位置数据，但接收报警信息；2 : 上传位置数据，且接收报警信息）
         int  traceType = 2;
         //实例化轨迹服务
-        trace = new Trace(getApplicationContext(), serviceId, entityName, traceType);
+        trace = new Trace(getApplicationContext(), mServerId, mEntityName, traceType);
 
         // 设置http请求协议类型0:http,1:https
         client.setProtocolType(1);
@@ -125,13 +137,38 @@ public class RideService extends Service{
         public List<String> getPointList(){
             return mList;
         }
+
+//        public String getEntityList(){
+//
+//        }
     }
 
     public void getEntityList(){
-        //client.queryEntityList();
+        OnEntityListener onEntityListener = new OnEntityListener() {
+            @Override
+            public void onRequestFailedCallback(String s) {
+
+            }
+
+            @Override
+            public void onQueryEntityListCallback(String s) {
+                System.out.println("entity回调接口消息 : " + s);
+                mOnGetEntityList.parseEntityList(s);
+            }
+        };
+        client.queryEntityList(mServerId, mEntityName, null,
+                mReturnType, mActiveTime, 1000, 1, onEntityListener);
     }
 
     public void getReatimeLoc(){
         //client.queryRealtimeLoc();
+    }
+
+    public interface OnGetEntityList{
+        void parseEntityList(String result);
+    }
+
+    public void setOnGetEntityList(OnGetEntityList onGetEntityList){
+        mOnGetEntityList = onGetEntityList;
     }
 }

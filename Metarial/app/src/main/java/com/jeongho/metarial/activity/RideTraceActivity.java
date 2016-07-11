@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapView;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.service.RideService;
 import com.jeongho.qxblibrary.Utils.ToastUtil;
@@ -21,12 +23,15 @@ import java.util.List;
 public class RideTraceActivity extends AppCompatActivity{
 
     private RideService.RideBinder mBinder;
+    private MapView mMapView;
+    private BaiduMap mBaiduMap;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBinder = (RideService.RideBinder)service;
             List<String> list = mBinder.getPointList();
+
             ToastUtil.showShort(RideTraceActivity.this, list.size() + "");
         }
 
@@ -41,6 +46,10 @@ public class RideTraceActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_trace);
 
+        mMapView = (MapView) findViewById(R.id.map);
+        mBaiduMap = mMapView.getMap();
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+
         Intent intent = new Intent(this, RideService.class);
         bindService(intent, mConnection, BIND_AUTO_CREATE);
     }
@@ -54,5 +63,18 @@ public class RideTraceActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mConnection);
+        mMapView.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
 }

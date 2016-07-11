@@ -2,6 +2,7 @@ package com.jeongho.metarial;
 
 import android.app.Application;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -24,5 +25,7 @@ public class QxbApplication extends Application{
                 .build();
 
         OkHttpUtils.initClient(okHttpClient);
+        //初始化百度地图
+        SDKInitializer.initialize(getApplicationContext());
     }
 }
