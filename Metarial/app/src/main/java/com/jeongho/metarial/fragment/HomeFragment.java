@@ -19,13 +19,11 @@ import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.jeongho.metarial.R;
+import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
 import com.jeongho.metarial.bean.HomeTopNewsBean;
 import com.jeongho.qxblibrary.Utils.ToastUtil;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,41 +53,53 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<View> mViewList = new LinkedList<>();
     private List<String> mTitleList = new LinkedList<>();
 
+    private ServerUtil mServerUtil;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        initData();
+        initView(root);
+        addHeaderView();
+        addFooterView();
+        initRefresh(root);
 
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.home_rv);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        return root;
+    }
 
-        mGridLayoutManager = new GridLayoutManager(getActivity(), 1);
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
-        //初始化cardView
-        LinkedList<String> list = new LinkedList<>();
-        for (int i = 0 ; i < 50; i++) {
-            list.add("galigeigei" + i);
-        }
-        mAdapter = new HomeFrmAdapter(getActivity(), list);
-        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_header, mRecyclerView, false);
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        mServerUtil = new ServerUtil();
+        mServerUtil.getHomeVpData(new ServerUtil.OnStringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.d("onError", e.getMessage());
+            }
 
-        //初始化ViewPager
-        mTopVp = (ViewPager) headerView.findViewById(R.id.top_vp);
+            @Override
+            public void onSuccess(String response, int id) {
+                Log.d("ok", response);
+                Gson gson = new Gson();
+                mHomeTopNewsBean = gson.fromJson(response, HomeTopNewsBean.class);
+                initTopNews();
+            }
+        });
+    }
 
-        mTopVp.setAdapter(mCpa);
-
-        //recycleView加头布局 尾布局
-        mAdapter.setHeaderView(headerView);
-        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer, mRecyclerView, false);
-        mAdapter.setFooterView(footerView);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.home_swipe_refresh);
+    /**
+     * 初始化刷新
+     */
+    private void initRefresh(View root) {
+        mRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.home_swipe_refresh);
         mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                //IDLE表示srcoll已经停止
                 if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         mLastItemPosition + 1 == mAdapter.getItemCount()){
                     if (!isMoreLoading){
@@ -118,25 +128,49 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mLastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
             }
         });
+    }
 
+    /**
+     * adapter添加尾布局
+     */
+    private void addFooterView() {
+        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer, mRecyclerView, false);
+        mAdapter.setFooterView(footerView);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
+    /**
+     * adapter添加头布局
+     */
+    private void addHeaderView() {
+        View headerView = getHeaderView();
+        //初始化ViewPager
+        mTopVp = (ViewPager) headerView.findViewById(R.id.top_vp);
+        mTopVp.setAdapter(mCpa);
+        //recycleView加头布局 尾布局
+        mAdapter.setHeaderView(headerView);
+    }
 
-        String url = "http://139.129.117.90/qxb_back/json/homepage.json";
-        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.d("onError", e.getMessage());
-            }
+    /**
+     * recycler头布局
+     * @return
+     */
+    private View getHeaderView() {
+        return LayoutInflater.from(getContext()).inflate(R.layout.item_header, mRecyclerView, false);
+    }
 
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("ok", response);
-                Gson gson = new Gson();
-                mHomeTopNewsBean = gson.fromJson(response, HomeTopNewsBean.class);
-                initTopNews();
-            }
-        });
-        return v;
+    private void initView(View root) {
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.home_rv);
+        mLayoutManager = new LinearLayoutManager(getContext());
+
+        mGridLayoutManager = new GridLayoutManager(getActivity(), 1);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        //初始化cardView
+        LinkedList<String> list = new LinkedList<>();
+        for (int i = 0 ; i < 50; i++) {
+            list.add("galigeigei" + i);
+        }
+        mAdapter = new HomeFrmAdapter(getActivity(), list);
     }
 
 
@@ -151,12 +185,25 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             final View view = LayoutInflater.from(getContext()).inflate(R.layout.item_top_vp, null);
             final ImageView iv = (ImageView) view.findViewById(R.id.iv);
 
-            OkHttpUtils
-                    .get()
-                    .url(mHomeTopNewsBean.homePage.get(i).getLogo())
-                    .build()
-                    .execute(new BitmapCallback()
-                    {
+//            OkHttpUtils
+//                    .get()
+//                    .url(mHomeTopNewsBean.homePage.get(i).getLogo())
+//                    .build()
+//                    .execute(new BitmapCallback()
+//                    {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onResponse(Bitmap response, int id) {
+//
+//                        }
+//                    });
+
+            mServerUtil.getBitmap(mHomeTopNewsBean.homePage.get(i).getLogo(),
+                    new ServerUtil.OnBitmapCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             //可能存在没有返回bitmap的情况
@@ -167,7 +214,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         }
 
                         @Override
-                        public void onResponse(Bitmap response, int id) {
+                        public void onSuccess(Bitmap response, int id) {
                             //子线程执行  下面bitmapList为null
                             iv.setImageBitmap(response);
                             mViewList.add(view);
@@ -197,6 +244,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }, 2000);
     }
 
+    //异步  没用到。。。。
     class LoadBitmapTask extends AsyncTask<HomeTopNewsBean,Integer, List<Bitmap>>{
 
         @Override

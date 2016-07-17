@@ -183,11 +183,11 @@ public class RideService extends Service{
 //        }
     }
 
-    public void getEntityList(){
-
-        client.queryEntityList(mServerId, mEntityName, null,
-                mReturnType, mActiveTime, 1000, 1, onEntityListener);
-    }
+//    public void getEntityList(){
+//
+//        client.queryEntityList(mServerId, mEntityName, null,
+//                mReturnType, mActiveTime, 1000, 1, onEntityListener);
+//    }
 
     public void getReatimeLoc(){
         //client.queryRealtimeLoc();
