@@ -40,24 +40,18 @@ public class User implements IUser{
 
     @Override
     public boolean checkLoginInfo() {
-        mServerUtil.loginUser(this, new ServerUtil.OnStringCallback() {
+        mServerUtil.loginUser(this, new ServerUtil.OnStringCallback2() {
             @Override
-            public void onError(Call call, Exception e, int id) {
-
+            public boolean onError(Call call, Exception e, int id) {
+                return false;
             }
 
             @Override
-            public void onSuccess(String response, int id) {
+            public boolean onSuccess(String response, int id) {
 
+                return true;
             }
         });
-
-
-
-
-        if (mUserName.equals("123") && mUserPwd.equals("123")){
-
-        }
-
+        return false;
     }
 }

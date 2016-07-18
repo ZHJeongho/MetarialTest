@@ -68,7 +68,7 @@ public class ServerUtil {
      * @param user
      * @param onStringCallback
      */
-    public void loginUser(User user, final OnStringCallback onStringCallback){
+    public void loginUser(User user, final OnStringCallback2 onStringCallback){
         OkHttpUtils
                 .post()
                 .url(UrlUtil.loginUser())
@@ -98,5 +98,10 @@ public class ServerUtil {
     public interface OnBitmapCallback{
         void onError(Call call, Exception e, int id);
         void onSuccess(Bitmap response, int id);
+    }
+
+    public interface OnStringCallback2{
+        boolean onError(Call call, Exception e, int id);
+        boolean onSuccess(String response, int id);
     }
 }
