@@ -18,6 +18,7 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     private ILoginPresenter mILoginPresenter;
 
     private Button mLoginBtn;
+    private Button mRegisterBtn;
     private TextInputLayout mUserNameTil;
     private TextInputLayout mUserPwdTil;
 
@@ -32,6 +33,9 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     private void initView() {
         mLoginBtn = (Button) findViewById(R.id.btn_login);
         mLoginBtn.setOnClickListener(this);
+
+        mRegisterBtn = (Button) findViewById(R.id.btn_register);
+        mRegisterBtn.setOnClickListener(this);
 
         mUserNameTil = (TextInputLayout) findViewById(R.id.til_user_name);
         mUserPwdTil = (TextInputLayout) findViewById(R.id.til_user_pwd);

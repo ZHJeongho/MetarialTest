@@ -17,4 +17,8 @@ public class UrlUtil {
     public static String getHomeVpData(){
         return ADDRESS + "json/homepage.json";
     }
+
+    public static String loginUser() {
+        return ADDRESS + "user/login";
+    }
 }
