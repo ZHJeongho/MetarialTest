@@ -68,7 +68,7 @@ public class ServerUtil {
      * @param user
      * @param onStringCallback
      */
-    public void loginUser(User user, final OnStringCallback2 onStringCallback){
+    public void loginUser(User user, final OnStringCallback onStringCallback){
         OkHttpUtils
                 .post()
                 .url(UrlUtil.loginUser())

@@ -40,18 +40,22 @@ public class User implements IUser{
 
     @Override
     public boolean checkLoginInfo() {
-        mServerUtil.loginUser(this, new ServerUtil.OnStringCallback2() {
+        mServerUtil.loginUser(this, new ServerUtil.OnStringCallback() {
             @Override
-            public boolean onError(Call call, Exception e, int id) {
-                return false;
+            public void onError(Call call, Exception e, int id) {
+                //checkLogin.onError(call, e, id);
             }
 
             @Override
-            public boolean onSuccess(String response, int id) {
-
-                return true;
+            public void onSuccess(String response, int id) {
+                //checkLogin.onSuccess(response, id);
             }
         });
         return false;
     }
+
+//    public interface ICheckLogin{
+//        void onError(Call call, Exception e, int id);
+//        void onSuccess(String response, int id);
+//    }
 }
