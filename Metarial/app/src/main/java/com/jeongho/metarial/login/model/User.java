@@ -11,6 +11,7 @@ public class User implements IUser{
     private String mUserName;
     private String mUserPwd;
     private ServerUtil mServerUtil;
+    private ICheckLogin mICheckLogin;
 
     public User() {
 
@@ -39,23 +40,26 @@ public class User implements IUser{
     }
 
     @Override
-    public boolean checkLoginInfo() {
+    public void checkLoginInfo() {
         mServerUtil.loginUser(this, new ServerUtil.OnStringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                //checkLogin.onError(call, e, id);
+                mICheckLogin.onError(call, e, id);
             }
 
             @Override
             public void onSuccess(String response, int id) {
-                //checkLogin.onSuccess(response, id);
+                mICheckLogin.onSuccess(response, id);
             }
         });
-        return false;
     }
 
-//    public interface ICheckLogin{
-//        void onError(Call call, Exception e, int id);
-//        void onSuccess(String response, int id);
-//    }
+    public void setICheckLogin(ICheckLogin checkLogin){
+        mICheckLogin = checkLogin;
+    }
+
+    public interface ICheckLogin{
+        void onError(Call call, Exception e, int id);
+        void onSuccess(String response, int id);
+    }
 }
