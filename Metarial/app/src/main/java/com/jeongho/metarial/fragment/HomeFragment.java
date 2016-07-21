@@ -23,6 +23,7 @@ import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
 import com.jeongho.metarial.bean.HomeTopNewsBean;
+import com.jeongho.metarial.ui.ZoomOutPageTransformer;
 import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import java.util.LinkedList;
@@ -146,6 +147,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View headerView = getHeaderView();
         //初始化ViewPager
         mTopVp = (ViewPager) headerView.findViewById(R.id.top_vp);
+        mTopVp.setPageTransformer(true, new ZoomOutPageTransformer());
         mTopVp.setAdapter(mCpa);
         //recycleView加头布局 尾布局
         mAdapter.setHeaderView(headerView);
