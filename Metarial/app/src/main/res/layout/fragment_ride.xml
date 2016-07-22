@@ -16,6 +16,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/white"
+            android:textSize="@dimen/button_text_size"
             android:elevation="4dp"
             android:text="@string/guide"/>
         <Button
@@ -28,6 +29,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/white"
+            android:textSize="@dimen/button_text_size"
             android:elevation="4dp"
             android:text="@string/news"/>
     </LinearLayout>
@@ -36,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/btn_maintenance"
+            android:id="@+id/btn_road_book"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,10 +47,11 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:background="@android:color/white"
+            android:textSize="@dimen/button_text_size"
             android:elevation="4dp"
-            android:text="@string/maintenance"/>
+            android:text="路书"/>
         <Button
-            android:id="@+id/btn_dry"
+            android:id="@+id/btn_ride_meet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -57,8 +60,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:background="@android:color/white"
+            android:textSize="@dimen/button_text_size"
             android:elevation="4dp"
-            android:text="@string/dry"/>
+            android:text="约行"/>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_ride"
@@ -67,6 +71,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/ic_directions_bike_white_24dp"
         />
 </RelativeLayout>

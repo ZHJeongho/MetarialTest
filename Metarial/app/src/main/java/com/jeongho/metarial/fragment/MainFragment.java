@@ -53,7 +53,7 @@ public class MainFragment extends Fragment{
 
         //TabLayout与ViewPager绑定
         mTab = (TabLayout) v.findViewById(R.id.tab);
-        mTab.setTabTextColors(getResources().getColor(R.color.icons),
+        mTab.setTabTextColors(getResources().getColor(R.color.colorText),
                 getResources().getColor(R.color.colorPrimaryLight));
         mTab.setupWithViewPager(mContentVp);
 
