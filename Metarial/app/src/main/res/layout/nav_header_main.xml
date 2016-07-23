@@ -18,15 +18,16 @@
         android:layout_height="72dp"
         app:civ_border_color="@color/colorText"
         android:layout_marginTop="24dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
         android:src="@drawable/ic_head"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Jeongho"
-        android:gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

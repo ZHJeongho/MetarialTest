@@ -17,7 +17,6 @@
             android:layout_marginBottom="10dp"
             android:background="@android:color/white"
             android:textSize="@dimen/button_text_size"
-            android:elevation="4dp"
             android:text="@string/guide"/>
         <Button
             android:id="@+id/btn_news"
@@ -64,6 +63,12 @@
             android:elevation="4dp"
             android:text="约行"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_ride"
         android:layout_width="wrap_content"
