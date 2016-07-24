@@ -44,7 +44,7 @@ public class RideCycleFragment extends Fragment implements View.OnClickListener 
                 RideInfoActivity.startAction(getContext());
                 break;
             case R.id.btn_ride_meet:
-                RideMeetDetailsActivity.startAcition(getContext());
+                RideMeetDetailsActivity.startAction(getContext());
                 break;
             case R.id.btn_road_book:
                 break;
