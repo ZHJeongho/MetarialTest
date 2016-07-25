@@ -2,6 +2,7 @@ package com.jeongho.metarial.login.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,7 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
     private ILoginPresenter mILoginPresenter;
 
-    private Button mLoginBtn;
+    private FloatingActionButton mLoginBtn;
     private Button mRegisterBtn;
     private TextInputLayout mUserNameTil;
     private TextInputLayout mUserPwdTil;
@@ -25,13 +26,13 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login2);
         initView();
         initData();
     }
 
     private void initView() {
-        mLoginBtn = (Button) findViewById(R.id.btn_login);
+        mLoginBtn = (FloatingActionButton) findViewById(R.id.fab_login);
         mLoginBtn.setOnClickListener(this);
 
         mRegisterBtn = (Button) findViewById(R.id.btn_register);
