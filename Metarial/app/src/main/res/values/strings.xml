@@ -24,4 +24,8 @@
     <string name="user_register">注册</string>
     <string name="ride_meet_guide">请准备好装备，带好钱，带好妹子!!请准备好装备，带好钱，带好妹子!!请准备好装备，带好钱，带好妹子!!请准备好装备，带好钱，带好妹子!!请准备好装备，带好钱，带好妹子!!</string>
     <string name="share">分享</string>
+    <string name="ride_book">路书</string>
+    <string name="ride_history">骑行历史</string>
+    <string name="ride_club">骑行俱乐部</string>
+    <string name="my_ride_club">我的俱乐部</string>
 </resources>
