@@ -24,6 +24,8 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
     private View mHeaderView;
     private View mFooterView;
 
+    private OnItemClickListener mOnItemClickListener;
+
     private final static int TYPE_HEADER = 1;
     private final static int TYPE_FOOTER = 2;
     private final static int TYPE_CONTENT = 3;
@@ -121,7 +123,11 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
         return TYPE_CONTENT;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(OnItemClickListener onClickListener){
+        mOnItemClickListener = onClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mTextView;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -132,6 +138,19 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
                 return;
             }
             mTextView = (TextView) itemView.findViewById(R.id.item_tv);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v != null){
+                if (mHeaderView != null){
+                    //去掉headerView  中间部分索引从0开始
+                    mOnItemClickListener.OnItemClick(v, getAdapterPosition() - 1);
+                }else {
+                    mOnItemClickListener.OnItemClick(v, getAdapterPosition());
+                }
+            }
         }
     }
 
@@ -147,5 +166,9 @@ public class HomeFrmAdapter extends RecyclerView.Adapter<HomeFrmAdapter.ViewHold
     public void addMoreBeans(List<String> moreBeans){
         mTitles.addAll(moreBeans);
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener{
+        void OnItemClick(View view, int position);
     }
 }

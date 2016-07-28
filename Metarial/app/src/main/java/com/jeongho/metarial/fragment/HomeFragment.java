@@ -34,7 +34,7 @@ import okhttp3.Call;
 /**
  * Created by Jeongho on 16/6/16.
  */
-public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, HomeFrmAdapter.OnItemClickListener, ContentPagerAdapter.OnPagerClickListener {
     private RecyclerView mRecyclerView;
     private HomeFrmAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View footerView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer, mRecyclerView, false);
         mAdapter.setFooterView(footerView);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
     }
 
     /**
@@ -179,6 +180,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initTopNews() {
 
         mCpa = new ContentPagerAdapter(mViewList, mTitleList);
+        mCpa.setOnPagerClickListener(this);
         mTopVp.setAdapter(mCpa);
 
         for (int i = 0; i < mHomeTopNewsBean.homePage.size(); i++){
@@ -244,6 +246,29 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 ToastUtil.showShort(getContext(), "haha");
             }
         }, 2000);
+    }
+
+    /**
+     * 中间部分item点击事件
+     * @param view
+     * @param position
+     */
+    @Override
+    public void OnItemClick(View view, int position) {
+        ToastUtil.showShort(getContext(), position + "");
+//        view.setTranslationZ(15);
+//        Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.out);
+//        view.setAnimation(a);
+    }
+
+    /**
+     * 顶部ViewPager点击事件
+     * @param view
+     * @param position
+     */
+    @Override
+    public void OnPagerClick(View view, int position) {
+        ToastUtil.showShort(getContext(), "pager" + position);
     }
 
     //异步  没用到。。。。
