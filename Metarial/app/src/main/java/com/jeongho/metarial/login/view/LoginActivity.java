@@ -3,7 +3,6 @@ package com.jeongho.metarial.login.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.login.presenter.ILoginPresenter;
 import com.jeongho.metarial.login.presenter.LoginPresenterCompl;
+import com.jeongho.metarial.widge.SnackUtil;
 
 /**
  * Created by Jeongho on 2016/6/21.
@@ -54,8 +54,7 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Snackbar snackbar = Snackbar.make(mRootRl, R.string.user_login_error, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_error, SnackUtil.ALERT).show();
         switch (v.getId()){
             case R.id.btn_login:
                 String userName = mUserNameTil.getEditText().getText().toString();
