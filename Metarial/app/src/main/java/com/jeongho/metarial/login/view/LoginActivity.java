@@ -3,9 +3,11 @@ package com.jeongho.metarial.login.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.login.presenter.ILoginPresenter;
@@ -22,6 +24,7 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     private Button mRegisterBtn;
     private TextInputLayout mUserNameTil;
     private TextInputLayout mUserPwdTil;
+    private RelativeLayout mRootRl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
         mUserNameTil = (TextInputLayout) findViewById(R.id.til_user_name);
         mUserPwdTil = (TextInputLayout) findViewById(R.id.til_user_pwd);
 
+        mRootRl = (RelativeLayout) findViewById(R.id.rl_root);
     }
 
     private void initData() {
@@ -50,6 +54,8 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
     @Override
     public void onClick(View v) {
+        Snackbar snackbar = Snackbar.make(mRootRl, R.string.user_login_error, Snackbar.LENGTH_SHORT);
+        snackbar.show();
         switch (v.getId()){
             case R.id.btn_login:
                 String userName = mUserNameTil.getEditText().getText().toString();

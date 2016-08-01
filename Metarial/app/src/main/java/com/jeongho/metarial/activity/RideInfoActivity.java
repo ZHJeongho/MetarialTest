@@ -2,7 +2,9 @@ package com.jeongho.metarial.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -44,12 +46,26 @@ public class RideInfoActivity extends AppCompatActivity implements View.OnClickL
                 RideTraceActivity.startAction(this);
                 break;
             case R.id.btn_start_ride:
-                Intent intent = new Intent(this, RideService.class);
-                startService(intent);
+                boolean isOn = GPRSIsOn();
+                if (isOn){
+                    Intent intent = new Intent(this, RideService.class);
+                    startService(intent);
+                }else {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.btn_stop_ride:
                 Intent intent1 = new Intent(this, RideService.class);
                 stopService(intent1);
         }
+    }
+
+    private boolean GPRSIsOn() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 }
