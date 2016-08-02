@@ -1,11 +1,13 @@
 package com.jeongho.metarial.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -46,25 +48,38 @@ public class RideInfoActivity extends AppCompatActivity implements View.OnClickL
                 RideTraceActivity.startAction(this);
                 break;
             case R.id.btn_start_ride:
-                boolean isOn = GPRSIsOn();
-                if (isOn){
-                    Intent intent = new Intent(this, RideService.class);
-                    startService(intent);
-                }else {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                boolean isOn = GPSIsOn();
+                if (!isOn) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("GPS设置").setMessage(R.string.suggest_GPS)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent();
+                                    intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.show();
                 }
-
+                Intent intent = new Intent(this, RideService.class);
+                startService(intent);
                 break;
             case R.id.btn_stop_ride:
-                Intent intent1 = new Intent(this, RideService.class);
-                stopService(intent1);
+                Intent stopIntent = new Intent(this, RideService.class);
+                stopService(stopIntent);
         }
     }
 
-    private boolean GPRSIsOn() {
+    private boolean GPSIsOn() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }

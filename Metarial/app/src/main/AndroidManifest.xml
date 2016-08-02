@@ -71,9 +71,12 @@
         <activity android:name=".activity.RideInfoActivity"/>
         <activity android:name=".activity.RideTraceActivity"/>
         <activity android:name=".activity.DiscoveryDetailsAty"/>
+        <activity android:name=".activity.NewsDetailsAty"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".activity.RideMeetDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.Design.NoActionBar"/>
+
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"

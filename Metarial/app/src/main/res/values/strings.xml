@@ -28,4 +28,6 @@
     <string name="ride_history">骑行历史</string>
     <string name="ride_club">骑行俱乐部</string>
     <string name="my_ride_club">我的俱乐部</string>
+    <string name="suggest_GPS">检测到您的GPS定位没有开启，若不开启可能影响定位的准确度。是否开启GPS？</string>
+    <string name="user_login_success">登录成功</string>
 </resources>

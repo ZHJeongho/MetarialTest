@@ -54,9 +54,9 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
     @Override
     public void onClick(View v) {
-        SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_error, SnackUtil.ALERT).show();
+
         switch (v.getId()){
-            case R.id.btn_login:
+            case R.id.fab_login:
                 String userName = mUserNameTil.getEditText().getText().toString();
                 String userPwd = mUserPwdTil.getEditText().getText().toString();
                 mILoginPresenter.login(userName, userPwd);
@@ -68,10 +68,11 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     public void onLoginResult(Boolean result) {
         if (result){
             //登陆成功
-
+            SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_success, SnackUtil.ALERT).show();
         }else {
             //登陆失败
             mUserPwdTil.setError(getResources().getString(R.string.user_login_error));
+            SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_error, SnackUtil.ALERT).show();
         }
     }
 }

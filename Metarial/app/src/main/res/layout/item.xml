@@ -58,7 +58,8 @@
                 android:layout_below="@id/civ_head"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/card_bg"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:transitionName="aaa"/>
             <TextView
                 android:id="@+id/tv_fav"
                 android:layout_alignParentBottom="true"

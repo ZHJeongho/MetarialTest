@@ -1,5 +1,7 @@
 package com.jeongho.metarial.fragment;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.Utils.ServerUtil;
+import com.jeongho.metarial.activity.NewsDetailsAty;
 import com.jeongho.metarial.adapter.ContentPagerAdapter;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
 import com.jeongho.metarial.bean.HomeTopNewsBean;
@@ -259,6 +262,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 //        view.setTranslationZ(15);
 //        Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.out);
 //        view.setAnimation(a);
+        Intent i = new Intent(getContext(), NewsDetailsAty.class);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), view.findViewById(R.id.iv), "aaa");
+        startActivity(i, options.toBundle());
     }
 
     /**
