@@ -19,11 +19,13 @@ public class ServerUtil {
 
     public OnStringCallback mOnStringCallback;
 
+    private final static String HEADER_AUTH= "authorization";
+
     /**
      * 获取首页轮播内容
      * @param onStringCallback
      */
-    public void getHomeVpData(final OnStringCallback onStringCallback){
+    public static void getHomeVpData(final OnStringCallback onStringCallback){
         OkHttpUtils
                 .get()
                 .url(UrlUtil.getHomeVpData())
@@ -46,7 +48,7 @@ public class ServerUtil {
      * @param bitmapUrl
      * @param onBitmapCallback
      */
-    public void getBitmap(String bitmapUrl, final OnBitmapCallback onBitmapCallback){
+    public static void getBitmap(String bitmapUrl, final OnBitmapCallback onBitmapCallback){
         OkHttpUtils
                 .get()
                 .url(bitmapUrl)
@@ -96,6 +98,29 @@ public class ServerUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void getUserDetail(String token, final OnStringCallback onStringCallback){
+
+//        SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(
+//                QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
+//        String token = preferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
+
+        OkHttpUtils.post()
+                .url(UrlUtil.getUserDetail())
+                .addHeader(HEADER_AUTH, token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        onStringCallback.onError(call, e, id);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        onStringCallback.onSuccess(response, id);
+                    }
+                });
     }
 
 

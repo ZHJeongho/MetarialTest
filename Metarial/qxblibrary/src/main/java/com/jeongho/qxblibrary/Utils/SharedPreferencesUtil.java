@@ -12,6 +12,9 @@ public class SharedPreferencesUtil {
 
     private SharedPreferences.Editor mEditor;
 
+    public static String USER_DATA = "user_data";
+    public static String TOKEN = "token";
+
     public SharedPreferencesUtil(Context context, String name){
         mSharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();

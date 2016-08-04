@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.jeongho.metarial.R;
+import com.jeongho.metarial.activity.MainActivity;
 import com.jeongho.metarial.login.presenter.ILoginPresenter;
 import com.jeongho.metarial.login.presenter.LoginPresenterCompl;
 import com.jeongho.metarial.widge.SnackUtil;
@@ -67,11 +68,16 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     @Override
     public void onLoginSuccess() {
         SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_success, SnackUtil.INFO).show();
+        //TODO:aty切换
+        setResult(MainActivity.LOGIN_RESULT);
+        this.finish();
     }
 
     @Override
     public void onLoginFailed(String error) {
         //mUserPwdTil.setError(getResources().getString(R.string.user_login_error));
         SnackUtil.createShortSnackbar(mRootRl, error, SnackUtil.ALERT).show();
+        setResult(MainActivity.LOGIN_RESULT);
+        this.finish();
     }
 }

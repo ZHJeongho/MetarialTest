@@ -29,6 +29,7 @@ public class LoginPresenterCompl implements ILoginPresenter{
         mUser.checkLoginInfo(userName, pwd, new LoginCallback() {
             @Override
             public void loginSuccess() {
+                //TODO:保存Token
                 mILoginView.onLoginSuccess();
             }
 

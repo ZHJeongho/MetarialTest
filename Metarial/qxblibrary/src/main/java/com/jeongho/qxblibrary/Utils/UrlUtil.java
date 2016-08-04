@@ -21,4 +21,8 @@ public class UrlUtil {
     public static String loginUser() {
         return ADDRESS + "user/login";
     }
+
+    public static String getUserDetail() {
+        return ADDRESS + "user/getDetail";
+    }
 }

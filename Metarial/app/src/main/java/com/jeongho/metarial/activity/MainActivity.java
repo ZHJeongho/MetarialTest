@@ -25,6 +25,7 @@ import com.jeongho.metarial.fragment.MyCollectFragment;
 import com.jeongho.metarial.fragment.MyPostsFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
 import com.jeongho.metarial.login.view.LoginActivity;
+import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,6 +34,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    public static final int LOGIN_REQUEST = 0x01;
+    public static final int LOGIN_RESULT = 0x02;
     private Toolbar mToolbar;
     private MyCollectFragment mCollectFragment;
     private MyAttentionFragment mAttentionFragment;
@@ -221,8 +224,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         switch (v.getId()){
             case R.id.civ_portrait:
                 Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, LOGIN_REQUEST);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT){
+            ToastUtil.showShort(this, "aaaaa");
         }
     }
 }

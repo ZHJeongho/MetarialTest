@@ -57,7 +57,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<View> mViewList = new LinkedList<>();
     private List<String> mTitleList = new LinkedList<>();
 
-    private ServerUtil mServerUtil;
 
     @Nullable
     @Override
@@ -76,8 +75,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      * 初始化数据
      */
     private void initData() {
-        mServerUtil = new ServerUtil();
-        mServerUtil.getHomeVpData(new ServerUtil.OnStringCallback() {
+        ServerUtil.getHomeVpData(new ServerUtil.OnStringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.d("onError", e.getMessage());
@@ -209,7 +207,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 //                        }
 //                    });
 
-            mServerUtil.getBitmap(mHomeTopNewsBean.homePage.get(i).getLogo(),
+            ServerUtil.getBitmap(mHomeTopNewsBean.homePage.get(i).getLogo(),
                     new ServerUtil.OnBitmapCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
