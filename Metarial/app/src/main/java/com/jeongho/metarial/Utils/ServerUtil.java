@@ -2,6 +2,7 @@ package com.jeongho.metarial.Utils;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.Gson;
 import com.jeongho.metarial.login.model.User;
 import com.jeongho.qxblibrary.Utils.UrlUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -9,6 +10,7 @@ import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Created by Jeongho on 16/7/17.
@@ -68,24 +70,32 @@ public class ServerUtil {
      * @param user
      * @param onStringCallback
      */
-    public void loginUser(User user, final OnStringCallback onStringCallback){
-        OkHttpUtils
-                .post()
-                .url(UrlUtil.loginUser())
-                .addParams("phone", user.getUserName())
-                .addParams("passwd", user.getUserPwd())
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        onStringCallback.onError(call, e, id);
-                    }
+    public static void loginUser(User user, final OnStringCallback onStringCallback){
+        try {
+            OkHttpUtils
+                    .postString()
+//                    .post()
+                    .url(UrlUtil.loginUser())
+                    .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                    .content(new Gson().toJson(user))
+//                    .addParams("userCode", user.getUserName())
+//                    .addParams("passwd", SecurityUtil.encrypt(user.getPasswd()))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            onStringCallback.onError(call, e, id);
+                        }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        onStringCallback.onSuccess(response, id);
-                    }
-                });
+                        @Override
+                        public void onResponse(String response, int id) {
+                            onStringCallback.onSuccess(response, id);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

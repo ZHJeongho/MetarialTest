@@ -26,18 +26,17 @@ public class LoginPresenterCompl implements ILoginPresenter{
 //            mILoginView.onLoginResult(false);
 //        }
 
-        mUser.checkLoginInfo(new LoginCallback() {
+        mUser.checkLoginInfo(userName, pwd, new LoginCallback() {
             @Override
             public void loginSuccess() {
-                mILoginView.onLoginResult(true);
+                mILoginView.onLoginSuccess();
             }
 
             @Override
-            public void loginFailed() {
-                mILoginView.onLoginResult(false);
+            public void loginFailed(String message) {
+                mILoginView.onLoginFailed(message);
             }
         });
-
     }
 
 }

@@ -6,5 +6,5 @@ package com.jeongho.metarial.login.view;
 public interface LoginCallback {
     void loginSuccess();
 
-    void loginFailed();
+    void loginFailed(String message);
 }

@@ -65,14 +65,13 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     }
 
     @Override
-    public void onLoginResult(Boolean result) {
-        if (result){
-            //登陆成功
-            SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_success, SnackUtil.ALERT).show();
-        }else {
-            //登陆失败
-            mUserPwdTil.setError(getResources().getString(R.string.user_login_error));
-            SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_error, SnackUtil.ALERT).show();
-        }
+    public void onLoginSuccess() {
+        SnackUtil.createShortSnackbar(mRootRl, R.string.user_login_success, SnackUtil.INFO).show();
+    }
+
+    @Override
+    public void onLoginFailed(String error) {
+        //mUserPwdTil.setError(getResources().getString(R.string.user_login_error));
+        SnackUtil.createShortSnackbar(mRootRl, error, SnackUtil.ALERT).show();
     }
 }

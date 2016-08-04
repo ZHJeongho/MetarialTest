@@ -13,6 +13,7 @@ import com.jeongho.metarial.R;
 import com.jeongho.metarial.adapter.CommonRecyclerAdapter;
 import com.jeongho.metarial.adapter.CommonRecyclerVH;
 import com.jeongho.metarial.bean.AttentionUserBean;
+import com.jeongho.metarial.widge.AttentionDecoration;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
         View root = inflater.inflate(R.layout.fragment_attention, container, false);
 
         mAttentionLv = (RecyclerView) root.findViewById(R.id.rv_attention);
-
+        mAttentionLv.addItemDecoration(new AttentionDecoration(getContext()));
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         mList = new LinkedList<>();
         for (int i = 0; i < 20; i++){
