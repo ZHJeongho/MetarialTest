@@ -9,7 +9,7 @@ import com.jeongho.metarial.R;
 /**
  * Created by Jeongho on 16/7/24.
  */
-public class UserDetailsAty extends AppCompatActivity{
+public class AttentionDetailsAty extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

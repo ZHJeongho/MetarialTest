@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     private CircleImageView mPortraitCiv;
 
+    private boolean isLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mPortraitCiv.setOnClickListener(this);
         //初始化MainFragment
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             return;
         }
 
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
 
-        if (id == R.id.civ_portrait){
+        if (id == R.id.civ_portrait) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
@@ -200,17 +202,18 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     private long firstBackTime;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
+        switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (mNavigationView.isShown()){
+                if (mNavigationView.isShown()) {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-                }else {
-                    if (System.currentTimeMillis() - firstBackTime > 2000){
+                } else {
+                    if (System.currentTimeMillis() - firstBackTime > 2000) {
                         Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                         firstBackTime = System.currentTimeMillis();
-                    }else {
+                    } else {
                         this.finish();
                     }
                 }
@@ -221,10 +224,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.civ_portrait:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivityForResult(intent, LOGIN_REQUEST);
+                //TODO:模拟用户登录前后点击头像效果
+                if (isLogin){
+                    Intent intent = new Intent(this, UserInfoActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivityForResult(intent, LOGIN_REQUEST);
+                }
                 break;
         }
     }
@@ -232,8 +241,24 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT){
+        if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT) {
             ToastUtil.showShort(this, "aaaaa");
+            isLogin = true;
+//            SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(
+//                    QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
+//            String token = preferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
+//
+//            ServerUtil.getUserDetail(token, new ServerUtil.OnStringCallback() {
+//                @Override
+//                public void onError(Call call, Exception e, int id) {
+//
+//                }
+//
+//                @Override
+//                public void onSuccess(String response, int id) {
+//                    //TODO:更新头像 用户名
+//                }
+//            });
         }
     }
 }

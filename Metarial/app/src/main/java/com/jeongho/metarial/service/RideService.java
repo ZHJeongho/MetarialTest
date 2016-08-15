@@ -1,12 +1,16 @@
 package com.jeongho.metarial.service;
 
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.LocationMode;
@@ -15,6 +19,8 @@ import com.baidu.trace.OnStartTraceListener;
 import com.baidu.trace.OnStopTraceListener;
 import com.baidu.trace.Trace;
 import com.jeongho.metarial.R;
+import com.jeongho.metarial.activity.MainActivity;
+import com.jeongho.metarial.activity.RideInfoActivity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -63,11 +69,24 @@ public class RideService extends Service{
         mList.add("aac");
 
         Notification.Builder builder = new Notification.Builder(this);
-        Notification notification = builder.setContentTitle("标题")
-                .setContentText("内容")
+        Notification notification = builder
                 .setSmallIcon(R.mipmap.ic_launcher, 0)
+                .setTicker("tongzhi")
+                .setWhen(System.currentTimeMillis())
                 .build();
-        startForeground(1, notification);
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        Intent intent = new Intent(this, RideInfoActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
+        PendingIntent openMain = PendingIntent.getService(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.content, openMain);
+        notification.contentView = remoteViews;
+        notification.contentIntent = pendingIntent;
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, notification);
+//        startForeground(1, notification);
+
+
     }
 
     @Override
