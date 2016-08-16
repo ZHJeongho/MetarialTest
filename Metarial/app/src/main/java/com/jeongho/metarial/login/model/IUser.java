@@ -1,5 +1,6 @@
 package com.jeongho.metarial.login.model;
 
+import com.jeongho.metarial.login.view.GetUserInfoCallback;
 import com.jeongho.metarial.login.view.LoginCallback;
 
 /**
@@ -7,4 +8,5 @@ import com.jeongho.metarial.login.view.LoginCallback;
  */
 public interface IUser {
     void checkLoginInfo(String name, String pwd, LoginCallback callback);
+    void getUserInfo(GetUserInfoCallback callback);
 }

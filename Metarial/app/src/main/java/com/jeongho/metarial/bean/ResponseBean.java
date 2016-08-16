@@ -6,4 +6,5 @@ package com.jeongho.metarial.bean;
 public class ResponseBean {
     public String message;
     public String result;
+    public String token;
 }

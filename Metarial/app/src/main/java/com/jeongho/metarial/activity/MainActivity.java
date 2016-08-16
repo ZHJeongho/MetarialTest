@@ -25,7 +25,7 @@ import com.jeongho.metarial.fragment.MyCollectFragment;
 import com.jeongho.metarial.fragment.MyPostsFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
 import com.jeongho.metarial.login.view.LoginActivity;
-import com.jeongho.qxblibrary.Utils.ToastUtil;
+import com.jeongho.metarial.widge.SnackUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -242,10 +242,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT) {
-            ToastUtil.showShort(this, "aaaaa");
             isLogin = true;
+            SnackUtil.createShortSnackbar(mDrawerLayout, "欢迎回来", SnackUtil.INFO).show();
+            //TODO:关闭侧边栏
 //            SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(
-//                    QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
+//                    QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
 //            String token = preferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
 //
 //            ServerUtil.getUserDetail(token, new ServerUtil.OnStringCallback() {

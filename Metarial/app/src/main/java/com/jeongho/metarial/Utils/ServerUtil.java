@@ -103,7 +103,7 @@ public class ServerUtil {
     public static void getUserDetail(String token, final OnStringCallback onStringCallback){
 
 //        SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(
-//                QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
+//                QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
 //        String token = preferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
 
         OkHttpUtils.post()

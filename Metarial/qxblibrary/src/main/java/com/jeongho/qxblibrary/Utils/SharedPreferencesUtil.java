@@ -2,6 +2,7 @@ package com.jeongho.qxblibrary.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Created by Jeongho on 16/6/23.
@@ -43,7 +44,10 @@ public class SharedPreferencesUtil {
      * @param value
      */
     public void putString(String key, String value){
-        mEditor.putString(key, value).commit();
+        Log.d("putString", "key: " + key + "   value: " + value);
+        if (mEditor != null){
+            mEditor.putString(key, value).commit();
+        }
     }
     /**
      * 存储数据（Boolean）

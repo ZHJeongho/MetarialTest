@@ -76,13 +76,17 @@ public class RideService extends Service{
                 .build();
         notification.flags = Notification.FLAG_AUTO_CANCEL;
         Intent intent = new Intent(this, RideInfoActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //启动Activity
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
-        PendingIntent openMain = PendingIntent.getService(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        //启动Activity
+        PendingIntent openMain = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.content, openMain);
+        remoteViews.setTextViewText(R.id.content, "哈哈哈哈");
         notification.contentView = remoteViews;
         notification.contentIntent = pendingIntent;
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //id不同 就会弹出多个通知
         manager.notify(1, notification);
 //        startForeground(1, notification);
 

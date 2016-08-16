@@ -1,9 +1,17 @@
 package com.jeongho.metarial.login.model;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.gson.Gson;
+import com.jeongho.metarial.QxbApplication;
+import com.jeongho.metarial.Utils.SecurityUtil;
 import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.bean.ResponseBean;
+import com.jeongho.metarial.bean.UserInfoBean;
+import com.jeongho.metarial.login.view.GetUserInfoCallback;
 import com.jeongho.metarial.login.view.LoginCallback;
+import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
 
 import okhttp3.Call;
 
@@ -46,8 +54,17 @@ public class User implements IUser {
     public void checkLoginInfo(String name, String pwd, final LoginCallback callback) {
 
         User user = new User();
+        //用户名和密码都不能为空
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)){
+            return;
+        }
         user.userCode = name;
-        user.passwd = pwd;
+        try {
+            //加密
+            user.passwd = SecurityUtil.encrypt(pwd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ServerUtil.loginUser(user, new ServerUtil.OnStringCallback() {
             @Override
@@ -57,7 +74,7 @@ public class User implements IUser {
 
             @Override
             public void onSuccess(String response, int id) {
-
+                Log.d("response", response);
                 Gson gson = new Gson();
                 ResponseBean bean = gson.fromJson(response, ResponseBean.class);
                 switch (bean.result) {
@@ -65,9 +82,29 @@ public class User implements IUser {
                         callback.loginFailed(bean.message);
                         break;
                     default:
-                        callback.loginSuccess();
+                        callback.loginSuccess(bean.token);
                         break;
                 }
+            }
+        });
+    }
+
+    @Override
+    public void getUserInfo(final GetUserInfoCallback callback) {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
+                QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+        String token = sharedPreferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
+        ServerUtil.getUserDetail(token, new ServerUtil.OnStringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onSuccess(String response, int id) {
+                Gson gson = new Gson();
+                UserInfoBean bean = gson.fromJson(response, UserInfoBean.class);
+                callback.getInfoSuccess(bean);
             }
         });
     }

@@ -46,6 +46,7 @@
     <meta-data android:name="UMENG_APPKEY" android:value="578cda9f67e58e5518001eb7"/>
 
     <application
+        android:name=".QxbApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -71,6 +72,7 @@
         <activity android:name=".activity.RideInfoActivity"/>
         <activity android:name=".activity.RideTraceActivity"/>
         <activity android:name=".activity.DiscoveryDetailsAty"/>
+        <activity android:name=".activity.UserInfoActivity"/>
         <activity android:name=".activity.NewsDetailsAty"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
