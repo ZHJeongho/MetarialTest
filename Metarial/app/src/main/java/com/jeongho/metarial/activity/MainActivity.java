@@ -1,6 +1,7 @@
 package com.jeongho.metarial.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,14 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.jeongho.metarial.QxbApplication;
 import com.jeongho.metarial.R;
+import com.jeongho.metarial.Utils.ServerUtil;
+import com.jeongho.metarial.bean.UserInfoBean;
 import com.jeongho.metarial.fragment.MainFragment;
 import com.jeongho.metarial.fragment.MyAttentionFragment;
 import com.jeongho.metarial.fragment.MyCollectFragment;
@@ -26,8 +32,10 @@ import com.jeongho.metarial.fragment.MyPostsFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
 import com.jeongho.metarial.login.view.LoginActivity;
 import com.jeongho.metarial.widge.SnackUtil;
+import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
 
 /**
  * Created by Jeongho on 2016/6/16.
@@ -48,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private DrawerLayout mDrawerLayout;
 
     private CircleImageView mPortraitCiv;
+    private TextView mNicknameTv;
 
+    private SharedPreferencesUtil mSharedPreferencesUtil;
     private boolean isLogin;
 
     @Override
@@ -69,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         mToolbar.setOnMenuItemClickListener(this);
 
+        mSharedPreferencesUtil = new SharedPreferencesUtil(
+                QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         View naviHeader = mNavigationView.getHeaderView(0);
         mPortraitCiv = (CircleImageView) naviHeader.findViewById(R.id.civ_portrait);
         mPortraitCiv.setOnClickListener(this);
+
+        mNicknameTv = (TextView) naviHeader.findViewById(R.id.tv_nickname);
         //初始化MainFragment
 
         if (savedInstanceState != null) {
@@ -147,10 +161,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
 
-        if (id == R.id.civ_portrait) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
         if (id == R.id.nav_home) {
             if (mMainFragment == null) {
                 mMainFragment = new MainFragment();
@@ -242,24 +252,39 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT) {
+            //模拟登录
             isLogin = true;
-            SnackUtil.createShortSnackbar(mDrawerLayout, "欢迎回来", SnackUtil.INFO).show();
-            //TODO:关闭侧边栏
-//            SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(
-//                    QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
-//            String token = preferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
-//
-//            ServerUtil.getUserDetail(token, new ServerUtil.OnStringCallback() {
-//                @Override
-//                public void onError(Call call, Exception e, int id) {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(String response, int id) {
-//                    //TODO:更新头像 用户名
-//                }
-//            });
+            //更新头像 用户名
+            mNicknameTv.setText(getNickname());
+            SnackUtil.createLongSnackbar(mDrawerLayout, "欢迎回来, " + getNickname(), SnackUtil.INFO).show();
+
+            ServerUtil.getBitmap(getPortraitUrl(), new ServerUtil.OnBitmapCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+
+                }
+
+                @Override
+                public void onSuccess(Bitmap response, int id) {
+                    mPortraitCiv.setImageBitmap(response);
+                }
+            });
         }
+    }
+
+    private String getNickname() {
+        UserInfoBean userInfoBean = getUserInfoBean();
+        return userInfoBean.user.nickname;
+    }
+
+    private String getPortraitUrl() {
+        UserInfoBean userInfoBean = getUserInfoBean();
+        return userInfoBean.user.icon;
+    }
+
+    private UserInfoBean getUserInfoBean() {
+        String userInfo = mSharedPreferencesUtil.getString(SharedPreferencesUtil.USER_INFO, "");
+        Gson gson = new Gson();
+        return gson.fromJson(userInfo, UserInfoBean.class);
     }
 }

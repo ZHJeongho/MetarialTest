@@ -25,6 +25,12 @@ public class SnackUtil {
         return snackbar;
     }
 
+    public static Snackbar createLongSnackbar(View view, String message, int type){
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        setSnackbarBackgroud(snackbar, type);
+        return snackbar;
+    }
+
     public static Snackbar createShortSnackbar(View view, int resId, int type){
         String message = view.getResources().getString(resId);
         return createShortSnackbar(view, message, type);

@@ -7,7 +7,7 @@ public class UserInfoBean {
     public int result;
     public UserDetails user;
 
-    class UserDetails{
+    public class UserDetails{
         public int userId;
         public String nickname;
         public boolean sex;

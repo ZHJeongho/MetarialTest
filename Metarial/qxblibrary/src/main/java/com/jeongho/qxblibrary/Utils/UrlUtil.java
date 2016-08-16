@@ -25,4 +25,13 @@ public class UrlUtil {
     public static String getUserDetail() {
         return ADDRESS + "user/getDetail";
     }
+
+    //POST
+    public static String updateUserDetail(){
+        return ADDRESS + "user/update";
+    }
+    //Content-type=multipart/form-data
+    public static String updatePortrait(){
+        return ADDRESS + "user/icon";
+    }
 }

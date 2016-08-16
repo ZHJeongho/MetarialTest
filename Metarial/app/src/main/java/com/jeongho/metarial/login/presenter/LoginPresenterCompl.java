@@ -3,7 +3,6 @@ package com.jeongho.metarial.login.presenter;
 import android.util.Log;
 
 import com.jeongho.metarial.QxbApplication;
-import com.jeongho.metarial.bean.UserInfoBean;
 import com.jeongho.metarial.login.model.IUser;
 import com.jeongho.metarial.login.model.User;
 import com.jeongho.metarial.login.view.GetUserInfoCallback;
@@ -55,14 +54,26 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
     public void loginFailed(String message) {
         mILoginView.onLoginFailed(message);
     }
-
     /**
      * 登录成功后，获取到用户信息后再切换Aty
-     * @param bean
+     * @param userInfo
      */
     @Override
-    public void getInfoSuccess(UserInfoBean bean) {
-        Log.d("getInfoSuccess", bean.toString());
+    public void getInfoSuccess(String userInfo) {
+        Log.d("getInfoSuccess", userInfo);
+        try{
+            SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
+                    QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+            sharedPreferencesUtil.putString(SharedPreferencesUtil.USER_INFO, userInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         mILoginView.onLoginSuccess();
     }
+
+//    @Override
+//    public void getInfoSuccess(UserInfoBean bean) {
+//        Log.d("getInfoSuccess", bean.toString());
+//        mILoginView.onLoginSuccess();
+//    }
 }

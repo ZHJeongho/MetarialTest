@@ -9,6 +9,7 @@ import android.util.Log;
  */
 public class SharedPreferencesUtil {
 
+    public static final String USER_INFO = "user_info";
     private SharedPreferences mSharedPreferences;
 
     private SharedPreferences.Editor mEditor;

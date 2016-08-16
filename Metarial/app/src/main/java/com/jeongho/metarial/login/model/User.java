@@ -8,7 +8,6 @@ import com.jeongho.metarial.QxbApplication;
 import com.jeongho.metarial.Utils.SecurityUtil;
 import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.bean.ResponseBean;
-import com.jeongho.metarial.bean.UserInfoBean;
 import com.jeongho.metarial.login.view.GetUserInfoCallback;
 import com.jeongho.metarial.login.view.LoginCallback;
 import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
@@ -102,9 +101,7 @@ public class User implements IUser {
 
             @Override
             public void onSuccess(String response, int id) {
-                Gson gson = new Gson();
-                UserInfoBean bean = gson.fromJson(response, UserInfoBean.class);
-                callback.getInfoSuccess(bean);
+                callback.getInfoSuccess(response);
             }
         });
     }
