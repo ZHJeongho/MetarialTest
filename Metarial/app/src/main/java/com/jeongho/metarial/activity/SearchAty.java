@@ -10,10 +10,10 @@ import com.jeongho.metarial.R;
  * 关注用户详情界面
  * Created by Jeongho on 16/7/24.
  */
-public class AttentionDetailsAty extends AppCompatActivity{
+public class SearchAty extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_detail);
+        setContentView(R.layout.activity_search);
     }
 }

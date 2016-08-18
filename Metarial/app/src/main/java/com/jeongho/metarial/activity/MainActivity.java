@@ -38,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
 /**
+ * 主界面
  * Created by Jeongho on 2016/6/16.
  */
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {

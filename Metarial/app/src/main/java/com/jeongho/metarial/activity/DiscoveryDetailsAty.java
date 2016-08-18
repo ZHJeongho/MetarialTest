@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.jeongho.metarial.R;
 
 /**
+ * 发现详情界面
  * Created by Jeongho on 2016/7/9.
  */
 public class DiscoveryDetailsAty extends AppCompatActivity {

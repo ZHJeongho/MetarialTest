@@ -19,6 +19,7 @@ import com.jeongho.qxblibrary.Utils.ToastUtil;
 import java.util.List;
 
 /**
+ * 实时轨迹界面
  * Created by Jeongho on 16/7/5.
  */
 public class RideTraceActivity extends AppCompatActivity{

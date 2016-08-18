@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.jeongho.metarial.R;
+import com.jeongho.metarial.activity.RideBookListActivity;
+import com.jeongho.metarial.activity.RideClubListActivity;
+import com.jeongho.metarial.activity.RideHistoryActivity;
 import com.jeongho.metarial.activity.RideInfoActivity;
 import com.jeongho.metarial.activity.RideMeetDetailsActivity;
 import com.jeongho.metarial.adapter.HomeFrmAdapter;
@@ -34,6 +37,8 @@ public class RideCycleFragment extends Fragment implements View.OnClickListener 
 
     private Button mRideMeetBtn;
     private Button mRoadBookBtn;
+    private Button mRideHistoryBtn;
+    private Button mRideClubBtn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,7 +69,10 @@ public class RideCycleFragment extends Fragment implements View.OnClickListener 
         mRideMeetBtn.setOnClickListener(this);
         mRoadBookBtn = (Button) header.findViewById(R.id.btn_road_book);
         mRoadBookBtn.setOnClickListener(this);
-
+        mRideHistoryBtn = (Button) header.findViewById(R.id.btn_ride_history);
+        mRideHistoryBtn.setOnClickListener(this);
+        mRideClubBtn = (Button) header.findViewById(R.id.btn_ride_club);
+        mRideClubBtn.setOnClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         return root;
     }
@@ -78,7 +86,14 @@ public class RideCycleFragment extends Fragment implements View.OnClickListener 
             case R.id.btn_ride_meet:
                 RideMeetDetailsActivity.startAction(getContext());
                 break;
+            case R.id.btn_ride_history:
+                RideHistoryActivity.startAction(getContext());
+                break;
+            case R.id.btn_ride_club:
+                RideClubListActivity.startAction(getContext());
+                break;
             case R.id.btn_road_book:
+                RideBookListActivity.startAction(getContext());
                 break;
         }
     }

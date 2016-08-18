@@ -78,7 +78,14 @@
         <activity
             android:name=".activity.RideMeetDetailsActivity"
             android:theme="@style/Theme.Design.NoActionBar"/>
-
+        <activity android:name=".activity.AttentionDetailsAty"/>
+        <activity android:name=".activity.ClubMemberAty"/>
+        <activity android:name=".activity.LaunchRideMeetActivity"/>
+        <activity android:name=".activity.RideHistoryActivity"/>
+        <activity android:name=".activity.RideMeetListActivity"/>
+        <activity android:name=".activity.SearchAty"/>
+        <activity android:name=".activity.RideBookListActivity"/>
+        <activity android:name=".activity.RideClubDetailsActivity"/>
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"

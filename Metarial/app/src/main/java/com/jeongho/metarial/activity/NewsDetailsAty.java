@@ -8,6 +8,7 @@ import android.view.Window;
 import com.jeongho.metarial.R;
 
 /**
+ * 发现详情界面
  * Created by Jeongho on 2016/8/2.
  */
 public class NewsDetailsAty extends AppCompatActivity{

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/btn_guide"
+            android:id="@+id/btn_ride_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +27,7 @@
             android:elevation="4dp"
             android:text="@string/guide"/>
         <Button
-            android:id="@+id/btn_news"
+            android:id="@+id/btn_ride_club"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

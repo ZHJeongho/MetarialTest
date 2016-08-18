@@ -13,6 +13,7 @@ import com.jeongho.metarial.R;
 import com.jeongho.metarial.Utils.TextFontUtil;
 
 /**
+ * 约行的详情界面
  * Created by Jeongho on 2016/7/22.
  */
 public class RideMeetDetailsActivity extends AppCompatActivity{

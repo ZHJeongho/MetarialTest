@@ -16,6 +16,7 @@ import com.jeongho.metarial.R;
 import com.jeongho.metarial.service.RideService;
 
 /**
+ * 骑行信息界面
  * Created by Jeongho on 16/7/5.
  */
 public class RideInfoActivity extends AppCompatActivity implements View.OnClickListener {

@@ -7,13 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import com.jeongho.metarial.R;
 
 /**
- * 关注用户详情界面
+ * 俱乐部成员
  * Created by Jeongho on 16/7/24.
  */
-public class AttentionDetailsAty extends AppCompatActivity{
+public class ClubMemberAty extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_detail);
+        setContentView(R.layout.activity_club_member);
     }
 }

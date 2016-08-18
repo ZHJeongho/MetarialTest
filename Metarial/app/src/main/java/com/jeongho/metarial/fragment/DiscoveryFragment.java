@@ -27,9 +27,9 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
 
-        mGuideBtn = (Button) v.findViewById(R.id.btn_guide);
+        mGuideBtn = (Button) v.findViewById(R.id.btn_ride_history);
         mGuideBtn.setOnClickListener(this);
-        mNewsBtn = (Button) v.findViewById(R.id.btn_news);
+        mNewsBtn = (Button) v.findViewById(R.id.btn_ride_club);
         mNewsBtn.setOnClickListener(this);
         mMaintenanceBtn = (Button) v.findViewById(R.id.btn_maintenance);
         mMaintenanceBtn.setOnClickListener(this);
@@ -42,12 +42,12 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()){
-            case R.id.btn_guide:
+            case R.id.btn_ride_history:
                 intent.setClass(getContext(), DiscoveryDetailsAty.class);
                 intent.putExtra("TAG", 1);
                 startActivity(intent);
                 break;
-            case R.id.btn_news:
+            case R.id.btn_ride_club:
                 intent.setClass(getContext(), DiscoveryDetailsAty.class);
                 intent.putExtra("TAG", 2);
                 startActivity(intent);

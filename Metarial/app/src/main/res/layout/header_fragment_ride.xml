@@ -22,14 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/btn_guide"
+                android:id="@+id/btn_ride_history"
                 android:layout_width="150dp"
                 android:layout_height="72dp"
                 android:background="@android:color/transparent"
                 android:textSize="@dimen/button_text_size"
                 android:text="@string/ride_history"/>
             <Button
-                android:id="@+id/btn_news"
+                android:id="@+id/btn_ride_club"
                 android:layout_width="150dp"
                 android:layout_height="72dp"
                 android:layout_alignParentRight="true"

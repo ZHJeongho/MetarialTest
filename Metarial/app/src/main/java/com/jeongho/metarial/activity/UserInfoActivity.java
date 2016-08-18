@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.jeongho.metarial.R;
 
 /**
+ * 用户信息界面
  * Created by Jeongho on 16/7/19.
  */
 public class UserInfoActivity extends AppCompatActivity{
