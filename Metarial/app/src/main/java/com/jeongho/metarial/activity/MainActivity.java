@@ -21,10 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.jeongho.metarial.QxbApplication;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.bean.UserInfoBean;
+import com.jeongho.metarial.common.QxbAccount;
+import com.jeongho.metarial.common.QxbApplication;
 import com.jeongho.metarial.fragment.MainFragment;
 import com.jeongho.metarial.fragment.MyAttentionFragment;
 import com.jeongho.metarial.fragment.MyCollectFragment;
@@ -43,8 +44,14 @@ import okhttp3.Call;
  */
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    public static final int LOGIN_REQUEST = 0x01;
-    public static final int LOGIN_RESULT = 0x02;
+    public static final int REQUEST_LOGIN = 0x01;
+    public static final int RESULT_LOGIN = 0x01;
+    public static final int REQUEST_COLLECT = 0x02;
+    public static final int RESULT_COLLECT = 0x02;
+    public static final int REQUEST_ATTENTION = 0x03;
+    public static final int RESULT_ATTENTION = 0x03;
+    public static final int REQUEST_POSTS = 0x04;
+    public static final int RESULT_POSTS = 0x04;
     private Toolbar mToolbar;
     private MyCollectFragment mCollectFragment;
     private MyAttentionFragment mAttentionFragment;
@@ -60,7 +67,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private TextView mNicknameTv;
 
     private SharedPreferencesUtil mSharedPreferencesUtil;
-    private boolean isLogin;
+
+    //记录第一次点击back的时间
+    private long firstBackTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mToolbar.setOnMenuItemClickListener(this);
 
         mSharedPreferencesUtil = new SharedPreferencesUtil(
-                QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+                QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -142,9 +151,61 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        Fragment fragment = null;
+        if (id == R.id.nav_collect || id == R.id.nav_attention || id == R.id.nav_posts){
+            if (!QxbAccount.isSignUp){
+                showLogin(id);
+                return true;
+            }else {
+                showFragment(id);
+            }
+        }
 
+        showFragment(id);
+        return true;
+    }
+
+    private void showFragment(int id) {
+        Fragment fragment = chooseFragment(id);
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        hideAllFragment(transaction);
+        if (null == fragment) {
+            //return true;
+            Log.d("fragment", "is null");
+        }
+
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.content_frame, fragment);
+        }
+
+        transaction.commit();
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void showLogin(int id) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        switch (id){
+            case R.id.nav_collect:
+                intent.putExtra("request_code", 0x02);
+                startActivityForResult(intent, REQUEST_COLLECT);
+                break;
+            case R.id.nav_attention:
+                intent.putExtra("request_code", 0x03);
+                startActivityForResult(intent, REQUEST_ATTENTION);
+                break;
+            case R.id.nav_posts:
+                intent.putExtra("request_code", 0x04);
+                startActivityForResult(intent, REQUEST_POSTS);
+                break;
+        }
+    }
+
+    /**
+     * 隐藏所有的fragment
+     * @param transaction
+     */
+    private void hideAllFragment(FragmentTransaction transaction) {
         if (mCollectFragment != null) {
             transaction.hide(mCollectFragment);
         }
@@ -160,59 +221,51 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         if (mMainFragment != null) {
             transaction.hide(mMainFragment);
         }
-
-
-        if (id == R.id.nav_home) {
-            if (mMainFragment == null) {
-                mMainFragment = new MainFragment();
-            }
-            fragment = mMainFragment;
-            mToolbar.setTitle(getResources().getString(R.string.app_name));
-        } else if (id == R.id.nav_collect) {
-            if (mCollectFragment == null) {
-                mCollectFragment = new MyCollectFragment();
-            }
-            fragment = mCollectFragment;
-            mToolbar.setTitle(getResources().getString(R.string.nav_collect));
-        } else if (id == R.id.nav_attention) {
-            if (mAttentionFragment == null) {
-                mAttentionFragment = new MyAttentionFragment();
-            }
-            fragment = mAttentionFragment;
-            mToolbar.setTitle(getResources().getString(R.string.nav_attention));
-        } else if (id == R.id.nav_posts) {
-            if (mPostsFragment == null) {
-                mPostsFragment = new MyPostsFragment();
-            }
-            fragment = mPostsFragment;
-            mToolbar.setTitle(getResources().getString(R.string.nav_posts));
-        } else if (id == R.id.nav_night_mode) {
-
-        } else if (id == R.id.nav_setting) {
-            if (mSettingFragment == null) {
-                mSettingFragment = new SettingFragment();
-            }
-            fragment = mSettingFragment;
-            mToolbar.setTitle(getResources().getString(R.string.nav_setting));
-        }
-
-        if (null == fragment) {
-            return true;
-        }
-
-        if (fragment.isAdded()) {
-            transaction.show(fragment);
-        } else {
-            transaction.add(R.id.content_frame, fragment);
-        }
-
-        transaction.commit();
-
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 
-    private long firstBackTime;
+    private Fragment chooseFragment(int id) {
+        Fragment fragment = null;
+        switch (id){
+            case R.id.nav_home:
+                if (mMainFragment == null) {
+                    mMainFragment = new MainFragment();
+                }
+                mToolbar.setTitle(getResources().getString(R.string.app_name));
+                fragment = mMainFragment;
+                break;
+            case R.id.nav_collect:
+                if (mCollectFragment == null) {
+                    mCollectFragment = new MyCollectFragment();
+                }
+                mToolbar.setTitle(getResources().getString(R.string.nav_collect));
+                fragment = mCollectFragment;
+                break;
+
+            case R.id.nav_attention:
+                if (mAttentionFragment == null) {
+                    mAttentionFragment = new MyAttentionFragment();
+                }
+                mToolbar.setTitle(getResources().getString(R.string.nav_attention));
+                fragment = mAttentionFragment;
+                break;
+            case R.id.nav_posts:
+                if (mPostsFragment == null) {
+                    mPostsFragment = new MyPostsFragment();
+                }
+                mToolbar.setTitle(getResources().getString(R.string.nav_posts));
+                fragment = mPostsFragment;
+                break;
+            case R.id.nav_setting:
+                if (mSettingFragment == null) {
+                    mSettingFragment = new SettingFragment();
+                }
+                mToolbar.setTitle(getResources().getString(R.string.nav_setting));
+                fragment = mSettingFragment;
+                break;
+        }
+        return fragment;
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -238,12 +291,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         switch (v.getId()) {
             case R.id.civ_portrait:
                 //TODO:模拟用户登录前后点击头像效果
-                if (isLogin){
+                if (QxbAccount.isSignUp){
                     Intent intent = new Intent(this, UserInfoActivity.class);
                     startActivity(intent);
                 }else {
                     Intent intent = new Intent(this, LoginActivity.class);
-                    startActivityForResult(intent, LOGIN_REQUEST);
+                    intent.putExtra("request_code", 0x01);
+                    startActivityForResult(intent, REQUEST_LOGIN);
                 }
                 break;
         }
@@ -252,25 +306,46 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOGIN_REQUEST && resultCode == LOGIN_RESULT) {
+        if (requestCode == REQUEST_LOGIN && resultCode == RESULT_LOGIN) {
             //模拟登录
-            isLogin = true;
-            //更新头像 用户名
-            mNicknameTv.setText(getNickname());
-            SnackUtil.createLongSnackbar(mDrawerLayout, "欢迎回来, " + getNickname(), SnackUtil.INFO).show();
-
-            ServerUtil.getBitmap(getPortraitUrl(), new ServerUtil.OnBitmapCallback() {
-                @Override
-                public void onError(Call call, Exception e, int id) {
-
-                }
-
-                @Override
-                public void onSuccess(Bitmap response, int id) {
-                    mPortraitCiv.setImageBitmap(response);
-                }
-            });
+            QxbAccount.isSignUp = true;
+            refreshHead();
         }
+
+        if (requestCode == REQUEST_COLLECT && resultCode == RESULT_COLLECT){
+            QxbAccount.isSignUp = true;
+            showFragment(R.id.nav_collect);
+            refreshHead();
+    }
+
+        if (requestCode == REQUEST_ATTENTION && resultCode == RESULT_ATTENTION){
+            QxbAccount.isSignUp = true;
+            showFragment(R.id.nav_attention);
+            refreshHead();
+        }
+
+        if (requestCode == REQUEST_POSTS && resultCode == RESULT_POSTS){
+            QxbAccount.isSignUp = true;
+            showFragment(R.id.nav_posts);
+            refreshHead();
+        }
+    }
+    //更新头像 用户名
+    private void refreshHead() {
+        mNicknameTv.setText(getNickname());
+        SnackUtil.createLongSnackbar(mDrawerLayout, "欢迎回来, " + getNickname(), SnackUtil.INFO).show();
+
+        ServerUtil.getBitmap(getPortraitUrl(), new ServerUtil.OnBitmapCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onSuccess(Bitmap response, int id) {
+                mPortraitCiv.setImageBitmap(response);
+            }
+        });
     }
 
     private String getNickname() {

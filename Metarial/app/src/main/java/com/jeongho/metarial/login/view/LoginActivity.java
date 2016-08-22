@@ -1,6 +1,8 @@
 package com.jeongho.metarial.login.view;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -67,7 +69,22 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
     @Override
     public void onLoginSuccess() {
-        setResult(MainActivity.LOGIN_RESULT);
+        Intent intent = getIntent();
+        int requestCode = intent.getIntExtra("request_code", 0x01);
+        switch (requestCode){
+            case 0x01:
+                setResult(MainActivity.RESULT_LOGIN);
+                break;
+            case 0x02:
+                setResult(MainActivity.RESULT_COLLECT);
+                break;
+            case 0x03:
+                setResult(MainActivity.RESULT_ATTENTION);
+                break;
+            case 0x04:
+                setResult(MainActivity.RESULT_POSTS);
+                break;
+        }
         this.finish();
     }
 
@@ -75,7 +92,12 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
     public void onLoginFailed(String error) {
         //登录失败不返回Main
         SnackUtil.createShortSnackbar(mRootRl, error, SnackUtil.ALERT).show();
-        //setResult(MainActivity.LOGIN_RESULT);
+        //setResult(MainActivity.RESULT_LOGIN);
         //this.finish();
+    }
+
+    public static void startAction(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
     }
 }

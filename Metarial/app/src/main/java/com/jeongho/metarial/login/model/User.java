@@ -4,10 +4,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jeongho.metarial.QxbApplication;
 import com.jeongho.metarial.Utils.SecurityUtil;
 import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.bean.ResponseBean;
+import com.jeongho.metarial.common.QxbApplication;
 import com.jeongho.metarial.login.view.GetUserInfoCallback;
 import com.jeongho.metarial.login.view.LoginCallback;
 import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
@@ -91,7 +91,7 @@ public class User implements IUser {
     @Override
     public void getUserInfo(final GetUserInfoCallback callback) {
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
-                QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+                QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
         String token = sharedPreferencesUtil.getString(SharedPreferencesUtil.TOKEN, "");
         ServerUtil.getUserDetail(token, new ServerUtil.OnStringCallback() {
             @Override

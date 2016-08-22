@@ -2,7 +2,7 @@ package com.jeongho.metarial.login.presenter;
 
 import android.util.Log;
 
-import com.jeongho.metarial.QxbApplication;
+import com.jeongho.metarial.common.QxbApplication;
 import com.jeongho.metarial.login.model.IUser;
 import com.jeongho.metarial.login.model.User;
 import com.jeongho.metarial.login.view.GetUserInfoCallback;
@@ -37,7 +37,7 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
         Log.d("loginSuccess ---> ", token);
         try{
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
-                    QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+                    QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
             sharedPreferencesUtil.putString(SharedPreferencesUtil.TOKEN, token);
         }catch (Exception e){
             e.printStackTrace();
@@ -63,7 +63,7 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
         Log.d("getInfoSuccess", userInfo);
         try{
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
-                    QxbApplication.getContext(), SharedPreferencesUtil.USER_DATA);
+                    QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
             sharedPreferencesUtil.putString(SharedPreferencesUtil.USER_INFO, userInfo);
         }catch (Exception e){
             e.printStackTrace();
