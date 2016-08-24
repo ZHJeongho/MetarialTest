@@ -72,6 +72,7 @@ public class RideInfoActivity extends AppCompatActivity implements View.OnClickL
                     builder.show();
                 }
                 Intent intent = new Intent(this, RideService.class);
+                //TODO：bindService
                 startService(intent);
                 break;
             case R.id.btn_stop_ride:
