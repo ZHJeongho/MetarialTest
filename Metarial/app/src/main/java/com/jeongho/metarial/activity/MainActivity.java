@@ -160,11 +160,15 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             }
         }
 
-        showFragment(id);
+        //showFragment(id);
         return true;
     }
 
     private void showFragment(int id) {
+        if (mNavigationView.isShown()){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+
         Fragment fragment = chooseFragment(id);
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         hideAllFragment(transaction);
@@ -180,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
         transaction.commit();
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+
     }
 
     private void showLogin(int id) {
@@ -316,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             QxbAccount.isSignUp = true;
             showFragment(R.id.nav_collect);
             refreshHead();
-    }
+        }
 
         if (requestCode == REQUEST_ATTENTION && resultCode == RESULT_ATTENTION){
             QxbAccount.isSignUp = true;
