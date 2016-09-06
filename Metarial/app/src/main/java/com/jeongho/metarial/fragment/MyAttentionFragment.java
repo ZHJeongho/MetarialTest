@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Jeongho on 16/6/16.
  */
 public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapter.OnBindViewHolder, CommonRecyclerVH.OnRecyclerItemClick {
-    private RecyclerView mAttentionLv;
+    private RecyclerView mAttentionRv;
 
     private RecyclerView.Adapter mAdapter;
 
@@ -35,9 +35,10 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_attention, container, false);
 
-        mAttentionLv = (RecyclerView) root.findViewById(R.id.rv_attention);
-        mAttentionLv.addItemDecoration(new AttentionDecoration(getContext()));
+        mAttentionRv = (RecyclerView) root.findViewById(R.id.rv_attention);
+
         mLayoutManager = new GridLayoutManager(getContext(), 1);
+
         mList = new LinkedList<>();
         for (int i = 0; i < 20; i++){
             AttentionUserBean bean = new AttentionUserBean();
@@ -47,7 +48,7 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
         }
 
 //        mAdapter = new AttentionRecyclerAdapter(getContext(), R.layout.item_attention_user, mList);
-//        mAttentionLv.setAdapter(mAdapter);
+//        mAttentionRv.setAdapter(mAdapter);
 
 //        mAdapter = new CommonRecyclerAdapter<>(getContext(),
 //                R.layout.item_attention_user, mList, new CommonRecyclerAdapter.OnBindViewHolder() {
@@ -58,8 +59,10 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
 //        });
 
         mAdapter = new CommonRecyclerAdapter<>(getContext(), R.layout.item_attention_user, mList, this);
-        mAttentionLv.setAdapter(mAdapter);
-        mAttentionLv.setLayoutManager(mLayoutManager);
+
+        mAttentionRv.setLayoutManager(mLayoutManager);
+        mAttentionRv.addItemDecoration(new AttentionDecoration(getContext()));
+        mAttentionRv.setAdapter(mAdapter);
         return root;
     }
 

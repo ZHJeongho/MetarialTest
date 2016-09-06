@@ -77,9 +77,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setContentView(R.layout.activity_main);
 
         initView(savedInstanceState);
+        initData();
+    }
+
+    private void initData() {
+        mSharedPreferencesUtil.getString()
     }
 
     private void initView(Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            return;
+        }
+
         //初始化Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.app_name);
@@ -101,16 +111,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        View naviHeader = mNavigationView.getHeaderView(0);
-        mPortraitCiv = (CircleImageView) naviHeader.findViewById(R.id.civ_portrait);
+        View headerView = mNavigationView.getHeaderView(0);
+        mPortraitCiv = (CircleImageView) headerView.findViewById(R.id.civ_portrait);
         mPortraitCiv.setOnClickListener(this);
 
-        mNicknameTv = (TextView) naviHeader.findViewById(R.id.tv_nickname);
+        mNicknameTv = (TextView) headerView.findViewById(R.id.tv_nickname);
         //初始化MainFragment
-
-        if (savedInstanceState != null) {
-            return;
-        }
 
         mMainFragment = new MainFragment();
         mFragmentManager = getSupportFragmentManager();
@@ -159,15 +165,14 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 showFragment(id);
             }
         }
-
-        showFragment(id);
         return true;
     }
 
     private void showFragment(int id) {
-        Fragment fragment = chooseFragment(id);
+
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         hideAllFragment(transaction);
+        Fragment fragment = chooseFragment(id);
         if (null == fragment) {
             //return true;
             Log.d("fragment", "is null");
@@ -180,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
         transaction.commit();
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        //mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void showLogin(int id) {

@@ -31,14 +31,20 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
     /**
      * 登录成功
      * @param token
+     * @param userAccount
+     * @param userPwd
      */
     @Override
-    public void loginSuccess(String token) {
+    public void loginSuccess(String token, String userAccount, String userPwd) {
         Log.d("loginSuccess ---> ", token);
         try{
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(
                     QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
             sharedPreferencesUtil.putString(SharedPreferencesUtil.TOKEN, token);
+            //TODO:加密
+            sharedPreferencesUtil.putString(SharedPreferencesUtil.USER_ACCOUNT, userAccount);
+            sharedPreferencesUtil.putString(SharedPreferencesUtil.USER_PASSWORD, userPwd);
+
         }catch (Exception e){
             e.printStackTrace();
         }

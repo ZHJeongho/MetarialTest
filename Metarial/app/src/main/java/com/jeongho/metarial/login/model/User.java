@@ -52,7 +52,7 @@ public class User implements IUser {
     @Override
     public void checkLoginInfo(String name, String pwd, final LoginCallback callback) {
 
-        User user = new User();
+        final User user = new User();
         //用户名和密码都不能为空
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)){
             return;
@@ -81,7 +81,7 @@ public class User implements IUser {
                         callback.loginFailed(bean.message);
                         break;
                     default:
-                        callback.loginSuccess(bean.token);
+                        callback.loginSuccess(bean.token, user.getUserName(), user.getPasswd());
                         break;
                 }
             }

@@ -16,6 +16,8 @@ public class SharedPreferencesUtil {
 
     public static String USER_DATA = "user_data";
     public static String TOKEN = "token";
+    public static String USER_ACCOUNT = "user_account";
+    public static String USER_PASSWORD = "user_password";
 
     public SharedPreferencesUtil(Context context, String name){
         mSharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
