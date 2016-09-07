@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.activity.DiscoveryDetailsAty;
+import com.jeongho.metarial.activity.EquipmentListActivity;
 
 /**
  * Created by Jeongho on 16/6/16.
@@ -21,6 +22,8 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener 
     private Button mNewsBtn;
     private Button mMaintenanceBtn;
     private Button mDryBtn;
+    private Button mBicycleBtn;
+    private Button mComponentBtn;
 
     @Nullable
     @Override
@@ -35,6 +38,10 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener 
         mMaintenanceBtn.setOnClickListener(this);
         mDryBtn = (Button) v.findViewById(R.id.btn_dry);
         mDryBtn.setOnClickListener(this);
+        mBicycleBtn = (Button) v.findViewById(R.id.btn_bicycle);
+        mBicycleBtn.setOnClickListener(this);
+        mComponentBtn = (Button) v.findViewById(R.id.btn_components);
+        mComponentBtn.setOnClickListener(this);
         return v;
     }
 
@@ -61,6 +68,8 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener 
                 intent.setClass(getContext(), DiscoveryDetailsAty.class);
                 intent.putExtra("TAG", 4);
                 startActivity(intent);
+            case R.id.btn_bicycle:
+                EquipmentListActivity.startAction(getContext());
                 break;
         }
     }

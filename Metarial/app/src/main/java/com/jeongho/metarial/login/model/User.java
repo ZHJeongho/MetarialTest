@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jeongho.metarial.Utils.SecurityUtil;
 import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.bean.ResponseBean;
 import com.jeongho.metarial.common.QxbApplication;
@@ -22,10 +21,6 @@ public class User implements IUser {
     private String passwd;
 
     private ServerUtil mServerUtil;
-
-    public User() {
-
-    }
 
     public User(String userName, String userPwd) {
         userCode = userName;
@@ -50,22 +45,21 @@ public class User implements IUser {
 
 
     @Override
-    public void checkLoginInfo(String name, String pwd, final LoginCallback callback) {
+    public void checkLoginInfo(final LoginCallback callback) {
 
-        final User user = new User();
         //用户名和密码都不能为空
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(userCode) || TextUtils.isEmpty(passwd)){
             return;
         }
-        user.userCode = name;
-        try {
-            //加密
-            user.passwd = SecurityUtil.encrypt(pwd);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        user.userCode = userCode;
+//        try {
+//            //加密
+//            user.passwd = SecurityUtil.encrypt(pwd);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        ServerUtil.loginUser(user, new ServerUtil.OnStringCallback() {
+        ServerUtil.loginUser(this, new ServerUtil.OnStringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 callback.loginFailed(e.getMessage());
@@ -81,7 +75,7 @@ public class User implements IUser {
                         callback.loginFailed(bean.message);
                         break;
                     default:
-                        callback.loginSuccess(bean.token, user.getUserName(), user.getPasswd());
+                        callback.loginSuccess(bean.token, userCode, passwd);
                         break;
                 }
             }

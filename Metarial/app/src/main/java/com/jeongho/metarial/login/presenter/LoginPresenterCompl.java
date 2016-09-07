@@ -24,8 +24,8 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
 
     @Override
     public void login(String userName, String pwd) {
-        mUser = new User();
-        mUser.checkLoginInfo(userName, pwd, this);
+        mUser = new User(userName, pwd);
+        mUser.checkLoginInfo(this);
     }
 
     /**

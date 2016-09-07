@@ -40,6 +40,7 @@
             android:text="@string/news"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_part_two"
         android:layout_below="@id/ll_part_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -68,5 +69,33 @@
             android:elevation="4dp"
             android:text="@string/dry"/>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_below="@id/ll_part_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_bicycle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:text="@string/bicycle"/>
+        <Button
+            android:id="@+id/btn_components"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:text="@string/components"/>
+    </LinearLayout>
 </RelativeLayout>

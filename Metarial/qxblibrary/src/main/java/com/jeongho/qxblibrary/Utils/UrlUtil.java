@@ -34,4 +34,8 @@ public class UrlUtil {
     public static String updatePortrait(){
         return ADDRESS + "user/icon";
     }
+
+    public static String getBicycleList(){
+        return ADDRESS + "/bike/list";
+    }
 }

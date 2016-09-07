@@ -9,9 +9,9 @@ import android.widget.TextView;
  * Created by Jeongho on 2016/7/29.
  */
 public class CommonRecyclerVH extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private SparseArray<View> mViewSparseArray;
-    private View mItemView;
-    private OnRecyclerItemClick mOnItemViewClick;
+    public SparseArray<View> mViewSparseArray;
+    public View mItemView;
+    public OnRecyclerItemClick mOnItemViewClick;
 
     public CommonRecyclerVH(View itemView) {
         super(itemView);

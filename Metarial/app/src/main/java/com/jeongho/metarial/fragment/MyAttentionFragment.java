@@ -14,6 +14,7 @@ import com.jeongho.metarial.adapter.CommonRecyclerAdapter;
 import com.jeongho.metarial.adapter.CommonRecyclerVH;
 import com.jeongho.metarial.bean.AttentionUserBean;
 import com.jeongho.metarial.widge.AttentionDecoration;
+import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,36 +34,25 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_attention, container, false);
-
-        mAttentionRv = (RecyclerView) root.findViewById(R.id.rv_attention);
-
-        mLayoutManager = new GridLayoutManager(getContext(), 1);
 
         mList = new LinkedList<>();
         for (int i = 0; i < 20; i++){
             AttentionUserBean bean = new AttentionUserBean();
-            bean.setUrl("我叫吴明峰" + i);
-            bean.setUserName("我叫吴明峰" + i);
+            bean.setUrl("我叫吴明峰嘎嘎" + i);
+            bean.setUserName("我叫吴明峰嘎嘎" + i);
             mList.add(bean);
         }
 
-//        mAdapter = new AttentionRecyclerAdapter(getContext(), R.layout.item_attention_user, mList);
-//        mAttentionRv.setAdapter(mAdapter);
-
-//        mAdapter = new CommonRecyclerAdapter<>(getContext(),
-//                R.layout.item_attention_user, mList, new CommonRecyclerAdapter.OnBindViewHolder() {
-//            @Override
-//            public void bindViewHolder(CommonRecyclerAdapter.ViewHolder holder, int position) {
-//                holder.setText(R.id.tv_user_name, mList.get(position).getUserName());
-//            }
-//        });
-
         mAdapter = new CommonRecyclerAdapter<>(getContext(), R.layout.item_attention_user, mList, this);
 
+
+        View root = inflater.inflate(R.layout.fragment_attention, container, false);
+        mAttentionRv = (RecyclerView) root.findViewById(R.id.rv_attention);
+        mLayoutManager = new GridLayoutManager(getContext(), 1);
         mAttentionRv.setLayoutManager(mLayoutManager);
-        mAttentionRv.addItemDecoration(new AttentionDecoration(getContext()));
         mAttentionRv.setAdapter(mAdapter);
+        mAttentionRv.addItemDecoration(new AttentionDecoration(getContext()));
+
         return root;
     }
 
@@ -70,13 +60,13 @@ public class MyAttentionFragment extends Fragment implements CommonRecyclerAdapt
     public void bindViewHolder(CommonRecyclerVH holder, int position) {
         holder.setText(R.id.tv_user_name, mList.get(position).getUserName());
         holder.setOnItemViewClick(this);
-        holder.addClickListener(R.id.tv_user_name);
-        holder.addClickListener(R.id.civ_head);
+//        holder.addClickListener(R.id.tv_user_name);
+//        holder.addClickListener(R.id.civ_head);
     }
 
     @Override
     public void onItemViewClick(View v, int position) {
-
+        ToastUtil.showShort(getContext(), position + "");
     }
 
 

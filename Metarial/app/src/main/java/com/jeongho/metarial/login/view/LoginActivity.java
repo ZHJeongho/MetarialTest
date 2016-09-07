@@ -60,9 +60,9 @@ public class LoginActivity extends Activity implements ILoginView, View.OnClickL
 
         switch (v.getId()){
             case R.id.fab_login:
-                String userName = mUserNameTil.getEditText().getText().toString();
+                String userAccount = mUserNameTil.getEditText().getText().toString();
                 String userPwd = mUserPwdTil.getEditText().getText().toString();
-                mILoginPresenter.login(userName, userPwd);
+                mILoginPresenter.login(userAccount, userPwd);
                 break;
         }
     }

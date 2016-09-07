@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:civ="http://schemas.android.com/apk/res-auto"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="56dp"
-    android:minHeight="72dp">
+              android:layout_height="72dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_head"
@@ -12,16 +11,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_centerVertical="true"
-        civ:civ_border_color="@color/colorPrimaryDark"
-        civ:civ_border_width="1dp"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:civ_border_width="1dp"
         android:src="@drawable/ic_head"/>
-    <TextView
+    <com.devspark.robototextview.widget.RobotoTextView
         android:id="@+id/tv_user_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/civ_head"
-        android:text="我叫吴明峰"
         android:gravity="center_vertical"
         android:textSize="@dimen/subhead_text_size"
-        />
+        app:typeface="roboto_bold"/>
 </RelativeLayout>

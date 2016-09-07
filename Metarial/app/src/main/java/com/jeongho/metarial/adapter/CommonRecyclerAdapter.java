@@ -34,8 +34,14 @@ public class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecycle
     }
 
     @Override
-    public void onBindViewHolder(CommonRecyclerVH holder, int position) {
+    public void onBindViewHolder(CommonRecyclerVH holder, final int position) {
         mBindViewHolder.bindViewHolder(holder, position);
+        holder.mItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBindViewHolder.onItemViewClick(v, position);
+            }
+        });
 
     }
 

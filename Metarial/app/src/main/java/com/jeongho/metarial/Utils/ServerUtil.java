@@ -100,6 +100,24 @@ public class ServerUtil {
         }
     }
 
+    public static void getBicycleList(final OnStringCallback onStringCallback){
+        OkHttpUtils
+                .post()
+                .url(UrlUtil.getBicycleList())
+                .build()
+                .execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                onStringCallback.onError(call, e, id);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                onStringCallback.onSuccess(response, id);
+            }
+        });
+    }
+
     public static void getUserDetail(String token, final OnStringCallback onStringCallback){
 
 //        SharedPreferencesUtil preferencesUtil = new SharedPreferencesUtil(

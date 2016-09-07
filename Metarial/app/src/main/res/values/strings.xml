@@ -30,4 +30,6 @@
     <string name="my_ride_club">我的俱乐部</string>
     <string name="suggest_GPS">检测到您的GPS定位没有开启，若不开启可能影响定位的准确度。是否开启GPS？</string>
     <string name="user_login_success">登录成功</string>
+    <string name="bicycle">整车</string>
+    <string name="components">零件</string>
 </resources>

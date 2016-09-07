@@ -31,7 +31,9 @@ import com.jeongho.metarial.fragment.MyAttentionFragment;
 import com.jeongho.metarial.fragment.MyCollectFragment;
 import com.jeongho.metarial.fragment.MyPostsFragment;
 import com.jeongho.metarial.fragment.SettingFragment;
+import com.jeongho.metarial.login.model.User;
 import com.jeongho.metarial.login.view.LoginActivity;
+import com.jeongho.metarial.login.view.LoginCallback;
 import com.jeongho.metarial.widge.SnackUtil;
 import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
 
@@ -42,7 +44,7 @@ import okhttp3.Call;
  * 主界面
  * Created by Jeongho on 2016/6/16.
  */
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, LoginCallback {
 
     public static final int REQUEST_LOGIN = 0x01;
     public static final int RESULT_LOGIN = 0x01;
@@ -81,7 +83,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     private void initData() {
-        //mSharedPreferencesUtil.getString()
+        String userAccount = mSharedPreferencesUtil.getString(SharedPreferencesUtil.USER_ACCOUNT, "");
+        String userPwd = mSharedPreferencesUtil.getString(SharedPreferencesUtil.USER_PASSWORD, "");
+        User user = new User(userAccount, userPwd);
+        user.checkLoginInfo(this);
     }
 
     private void initView(Bundle savedInstanceState) {
@@ -367,5 +372,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         String userInfo = mSharedPreferencesUtil.getString(SharedPreferencesUtil.USER_INFO, "");
         Gson gson = new Gson();
         return gson.fromJson(userInfo, UserInfoBean.class);
+    }
+
+    @Override
+    public void loginSuccess(String token, String userAccount, String userPwd) {
+        mSharedPreferencesUtil.putString(SharedPreferencesUtil.TOKEN, token);
+        mSharedPreferencesUtil.putString(SharedPreferencesUtil.USER_ACCOUNT, userAccount);
+        mSharedPreferencesUtil.putString(SharedPreferencesUtil.USER_PASSWORD, userPwd);
+        QxbAccount.isSignUp = true;
+        refreshHead();
+    }
+
+    @Override
+    public void loginFailed(String error) {
+
     }
 }
