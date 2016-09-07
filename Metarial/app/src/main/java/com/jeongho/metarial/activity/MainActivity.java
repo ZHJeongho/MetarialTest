@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     private void initData() {
-        mSharedPreferencesUtil.getString()
+        //mSharedPreferencesUtil.getString()
     }
 
     private void initView(Bundle savedInstanceState) {
@@ -164,17 +164,17 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             }else {
                 showFragment(id);
             }
+        }else {
+            showFragment(id);
         }
         return true;
     }
 
     private void showFragment(int id) {
-
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         hideAllFragment(transaction);
         Fragment fragment = chooseFragment(id);
         if (null == fragment) {
-            //return true;
             Log.d("fragment", "is null");
         }
 
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
 
         transaction.commit();
-        //mDrawerLayout.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void showLogin(int id) {
@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             QxbAccount.isSignUp = true;
             showFragment(R.id.nav_collect);
             refreshHead();
-    }
+        }
 
         if (requestCode == REQUEST_ATTENTION && resultCode == RESULT_ATTENTION){
             QxbAccount.isSignUp = true;
