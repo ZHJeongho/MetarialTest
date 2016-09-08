@@ -32,4 +32,9 @@
     <string name="user_login_success">登录成功</string>
     <string name="bicycle">整车</string>
     <string name="components">零件</string>
+    <string name="message_push">消息推送</string>
+    <string name="callback">反馈</string>
+    <string name="clean_cache">清除缓存</string>
+    <string name="version_update">版本更新</string>
+    <string name="about_qxb">关于我们</string>
 </resources>

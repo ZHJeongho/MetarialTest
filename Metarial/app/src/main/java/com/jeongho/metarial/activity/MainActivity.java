@@ -1,5 +1,6 @@
 package com.jeongho.metarial.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         switch (id){
             case R.id.nav_home:
                 Log.d("nav", "on home");
@@ -167,7 +168,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 SettingActivity.startAction(this);
                 break;
         }
-        return true;
+
+
+        return false;
     }
 
     private void switchActivity(int id) {
@@ -404,5 +407,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @Override
     public void loginFailed(String error) {
 
+    }
+
+    public static void startAction(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
     }
 }

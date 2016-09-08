@@ -2,6 +2,7 @@ package com.jeongho.metarial.login.presenter;
 
 import android.util.Log;
 
+import com.jeongho.metarial.Utils.SecurityUtil;
 import com.jeongho.metarial.common.QxbApplication;
 import com.jeongho.metarial.login.model.IUser;
 import com.jeongho.metarial.login.model.User;
@@ -24,8 +25,12 @@ public class LoginPresenterCompl implements ILoginPresenter, LoginCallback, GetU
 
     @Override
     public void login(String userName, String pwd) {
-        mUser = new User(userName, pwd);
-        mUser.checkLoginInfo(this);
+        try {
+            mUser = new User(userName, SecurityUtil.encrypt(pwd));
+            mUser.checkLoginInfo(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

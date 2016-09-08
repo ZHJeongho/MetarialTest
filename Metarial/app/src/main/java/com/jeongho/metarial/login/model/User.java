@@ -59,6 +59,8 @@ public class User implements IUser {
 //            e.printStackTrace();
 //        }
 
+        Log.d("userName", this.userCode);
+        Log.d("pwd",this.passwd);
         ServerUtil.loginUser(this, new ServerUtil.OnStringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

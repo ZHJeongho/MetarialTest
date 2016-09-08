@@ -59,7 +59,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Daytime">
+            android:theme="@style/AppTheme.Daytime"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -91,6 +92,7 @@
         <activity android:name=".activity.MyCollectActivity"/>
         <activity android:name=".activity.MyAttentionActivity"/>
         <activity android:name=".activity.MyPostsActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"
