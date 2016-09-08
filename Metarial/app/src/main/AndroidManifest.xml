@@ -88,6 +88,9 @@
         <activity android:name=".activity.RideClubDetailsActivity"/>
         <activity android:name=".activity.EquipmentListActivity"/>
         <activity android:name=".activity.EquipmentDetailsAty"/>
+        <activity android:name=".activity.MyCollectActivity"/>
+        <activity android:name=".activity.MyAttentionActivity"/>
+        <activity android:name=".activity.MyPostsActivity"/>
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"

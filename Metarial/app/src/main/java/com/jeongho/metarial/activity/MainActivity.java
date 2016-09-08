@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -98,11 +97,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         //初始化Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.app_name);
-        //布局文件中 app:title
-        //mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        mToolbar.inflateMenu(R.menu.menu_home);
         mToolbar.setOnMenuItemClickListener(this);
+        setSupportActionBar(mToolbar);
 
         mSharedPreferencesUtil = new SharedPreferencesUtil(
                 QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
@@ -116,32 +114,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        //头像
         View headerView = mNavigationView.getHeaderView(0);
         mPortraitCiv = (CircleImageView) headerView.findViewById(R.id.civ_portrait);
         mPortraitCiv.setOnClickListener(this);
-
+        //用户昵称
         mNicknameTv = (TextView) headerView.findViewById(R.id.tv_nickname);
-        //初始化MainFragment
 
+        //初始化MainFragment
         mMainFragment = new MainFragment();
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.add(R.id.content_frame, mMainFragment);
         transaction.commit();
-    }
-
-
-    //    private Toolbar.OnMenuItemClickListener OnMenuItemClick = new Toolbar.OnMenuItemClickListener() {
-    //        @Override
-    //        public boolean onMenuItemClick(MenuItem item) {
-    //            return false;
-    //        }
-    //    };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
     }
 
     @Override
@@ -162,17 +147,49 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_collect || id == R.id.nav_attention || id == R.id.nav_posts){
-            if (!QxbAccount.isSignUp){
-                showLogin(id);
-                return true;
-            }else {
-                showFragment(id);
-            }
-        }else {
-            showFragment(id);
+        switch (id){
+            case R.id.nav_home:
+                Log.d("nav", "on home");
+                break;
+            case R.id.nav_collect:
+                switchActivity(id);
+                break;
+            case R.id.nav_attention:
+                switchActivity(id);
+                break;
+            case R.id.nav_posts:
+                switchActivity(id);
+                break;
+            case R.id.nav_night_mode:
+                Log.d("nav", "on home");
+                break;
+            case R.id.nav_setting:
+                SettingActivity.startAction(this);
+                break;
         }
         return true;
+    }
+
+    private void switchActivity(int id) {
+        if (!QxbAccount.isSignUp){
+            showLogin(id);
+        }else {
+            showActivity(id);
+        }
+    }
+
+    private void showActivity(int id) {
+        switch (id){
+            case R.id.nav_collect:
+                MyCollectActivity.startAction(this);
+                break;
+            case R.id.nav_attention:
+                MyAttentionActivity.startAction(this);
+                break;
+            case R.id.nav_posts:
+                MyPostsActivity.startAction(this);
+                break;
+        }
     }
 
     private void showFragment(int id) {
@@ -193,6 +210,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * 用户未登陆 根据侧边栏点击情况跳转Aty
+     * @param id
+     */
     private void showLogin(int id) {
         Intent intent = new Intent(this, LoginActivity.class);
         switch (id){
@@ -324,20 +345,17 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
         if (requestCode == REQUEST_COLLECT && resultCode == RESULT_COLLECT){
             QxbAccount.isSignUp = true;
-            showFragment(R.id.nav_collect);
-            refreshHead();
+            MyCollectActivity.startAction(this);
         }
 
         if (requestCode == REQUEST_ATTENTION && resultCode == RESULT_ATTENTION){
             QxbAccount.isSignUp = true;
-            showFragment(R.id.nav_attention);
-            refreshHead();
+            MyAttentionActivity.startAction(this);
         }
 
         if (requestCode == REQUEST_POSTS && resultCode == RESULT_POSTS){
             QxbAccount.isSignUp = true;
-            showFragment(R.id.nav_posts);
-            refreshHead();
+            MyPostsActivity.startAction(this);
         }
     }
     //更新头像 用户名
