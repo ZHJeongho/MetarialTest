@@ -92,7 +92,7 @@
         <activity android:name=".activity.MyCollectActivity"/>
         <activity android:name=".activity.MyAttentionActivity"/>
         <activity android:name=".activity.MyPostsActivity"/>
-        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.setting.SettingActivity"/>
         <service android:name=".service.RideService"/>
         <service
             android:name="com.baidu.trace.LBSTraceService"

@@ -23,14 +23,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.jeongho.metarial.R;
 import com.jeongho.metarial.Utils.ServerUtil;
+import com.jeongho.metarial.activity.setting.SettingActivity;
 import com.jeongho.metarial.bean.UserInfoBean;
 import com.jeongho.metarial.common.QxbAccount;
 import com.jeongho.metarial.common.QxbApplication;
 import com.jeongho.metarial.fragment.MainFragment;
-import com.jeongho.metarial.fragment.MyAttentionFragment;
-import com.jeongho.metarial.fragment.MyCollectFragment;
-import com.jeongho.metarial.fragment.MyPostsFragment;
-import com.jeongho.metarial.fragment.SettingFragment;
 import com.jeongho.metarial.login.model.User;
 import com.jeongho.metarial.login.view.LoginActivity;
 import com.jeongho.metarial.login.view.LoginCallback;
@@ -55,10 +52,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public static final int REQUEST_POSTS = 0x04;
     public static final int RESULT_POSTS = 0x04;
     private Toolbar mToolbar;
-    private MyCollectFragment mCollectFragment;
-    private MyAttentionFragment mAttentionFragment;
-    private MyPostsFragment mPostsFragment;
-    private SettingFragment mSettingFragment;
     private MainFragment mMainFragment;
 
     private NavigationView mNavigationView;
@@ -240,18 +233,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      * @param transaction
      */
     private void hideAllFragment(FragmentTransaction transaction) {
-        if (mCollectFragment != null) {
-            transaction.hide(mCollectFragment);
-        }
-        if (mAttentionFragment != null) {
-            transaction.hide(mAttentionFragment);
-        }
-        if (mPostsFragment != null) {
-            transaction.hide(mPostsFragment);
-        }
-        if (mSettingFragment != null) {
-            transaction.hide(mSettingFragment);
-        }
         if (mMainFragment != null) {
             transaction.hide(mMainFragment);
         }
@@ -266,35 +247,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 }
                 mToolbar.setTitle(getResources().getString(R.string.app_name));
                 fragment = mMainFragment;
-                break;
-            case R.id.nav_collect:
-                if (mCollectFragment == null) {
-                    mCollectFragment = new MyCollectFragment();
-                }
-                mToolbar.setTitle(getResources().getString(R.string.nav_collect));
-                fragment = mCollectFragment;
-                break;
-
-            case R.id.nav_attention:
-                if (mAttentionFragment == null) {
-                    mAttentionFragment = new MyAttentionFragment();
-                }
-                mToolbar.setTitle(getResources().getString(R.string.nav_attention));
-                fragment = mAttentionFragment;
-                break;
-            case R.id.nav_posts:
-                if (mPostsFragment == null) {
-                    mPostsFragment = new MyPostsFragment();
-                }
-                mToolbar.setTitle(getResources().getString(R.string.nav_posts));
-                fragment = mPostsFragment;
-                break;
-            case R.id.nav_setting:
-                if (mSettingFragment == null) {
-                    mSettingFragment = new SettingFragment();
-                }
-                mToolbar.setTitle(getResources().getString(R.string.nav_setting));
-                fragment = mSettingFragment;
                 break;
         }
         return fragment;
