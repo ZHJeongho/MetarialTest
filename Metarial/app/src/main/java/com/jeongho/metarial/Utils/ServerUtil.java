@@ -102,8 +102,10 @@ public class ServerUtil {
 
     public static void getBicycleList(final OnStringCallback onStringCallback){
         OkHttpUtils
-                .post()
+                .postString()
                 .url(UrlUtil.getBicycleList())
+                .content(new Gson().toJson(new TestID("0")))
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute(new StringCallback() {
             @Override

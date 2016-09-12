@@ -87,7 +87,8 @@
         <activity android:name=".activity.SearchAty"/>
         <activity android:name=".activity.RideBookListActivity"/>
         <activity android:name=".activity.RideClubDetailsActivity"/>
-        <activity android:name=".activity.EquipmentListActivity"/>
+        <activity
+            android:name=".activity.EquipmentListActivity"/>
         <activity android:name=".activity.EquipmentDetailsAty"/>
         <activity android:name=".activity.MyCollectActivity"/>
         <activity android:name=".activity.MyAttentionActivity"/>
