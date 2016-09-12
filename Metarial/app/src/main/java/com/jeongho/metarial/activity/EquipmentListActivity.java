@@ -47,21 +47,8 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
     };
 
     private void initBicycle() {
-        mRecyclerAdapter = new CommonRecyclerAdapter<>(this, R.layout.item_bicycle_rv, mBicycleBeanList, new CommonRecyclerAdapter.OnBindViewHolder() {
-            @Override
-            public void bindViewHolder(CommonRecyclerVH holder, int position) {
-                holder.setText(R.id.tv, mBicycleBeanList.get(position).getModel());
-            }
 
-            @Override
-            public void onItemViewClick(View v, int position) {
-                ToastUtil.showShort(EquipmentListActivity.this, "" + position);
-            }
-        });
-
-        mContentRv.setLayoutManager(new GridLayoutManager(EquipmentListActivity.this, 2));
-        mContentRv.setAdapter(mRecyclerAdapter);
-        //mRecyclerAdapter.notifyDataSetChanged();
+        mRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -78,6 +65,20 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
 
     @Override
     public void initData() {
+        mRecyclerAdapter = new CommonRecyclerAdapter<>(this, R.layout.item_bicycle_rv, mBicycleBeanList, new CommonRecyclerAdapter.OnBindViewHolder() {
+            @Override
+            public void bindViewHolder(CommonRecyclerVH holder, int position) {
+                holder.setText(R.id.tv_model, mBicycleBeanList.get(position).getModel());
+            }
+
+            @Override
+            public void onItemViewClick(View v, int position) {
+                ToastUtil.showShort(EquipmentListActivity.this, "" + position);
+            }
+        });
+
+        mContentRv.setLayoutManager(new GridLayoutManager(EquipmentListActivity.this, 2));
+        mContentRv.setAdapter(mRecyclerAdapter);
 
         ServerUtil.getBicycleList(new ServerUtil.OnStringCallback() {
             @Override
@@ -96,7 +97,7 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
                     case "200":
                         //                            String bikes = jsonObject.getString("bikes");
 
-                        mBicycleBeanList = bicycleList.bikes;
+                        mBicycleBeanList.addAll(bicycleList.bikes);
                         Log.d("size", mBicycleBeanList.size() + "");
                         Message msg = Message.obtain();
                         msg.what = INIT_BICYCLE_LIST;
@@ -110,6 +111,9 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
         });
 
         Log.d("size", mBicycleBeanList.size() + "");
+
+
+
 
     }
 

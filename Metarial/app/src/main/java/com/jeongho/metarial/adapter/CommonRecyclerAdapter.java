@@ -28,6 +28,8 @@ public class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecycle
     @Override
     public CommonRecyclerVH onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(mItemLayoutId, parent, false);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         CommonRecyclerVH holder = new CommonRecyclerVH(itemView);
         //holder.setOnItemViewClick(this);
         return holder;
