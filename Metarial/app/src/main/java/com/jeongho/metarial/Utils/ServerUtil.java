@@ -100,11 +100,11 @@ public class ServerUtil {
         }
     }
 
-    public static void getBicycleList(final OnStringCallback onStringCallback){
+    public static void getBicycleList(String startIndex, final OnStringCallback onStringCallback){
         OkHttpUtils
                 .postString()
                 .url(UrlUtil.getBicycleList())
-                .content(new Gson().toJson(new TestID("0")))
+                .content(new Gson().toJson(new TestID(startIndex)))
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute(new StringCallback() {

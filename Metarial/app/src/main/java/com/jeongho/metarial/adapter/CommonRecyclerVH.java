@@ -5,6 +5,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 /**
  * Created by Jeongho on 2016/7/29.
  */
@@ -31,6 +33,12 @@ public class CommonRecyclerVH extends RecyclerView.ViewHolder implements View.On
     public CommonRecyclerVH setText(int viewId, String value){
         TextView tv = (TextView) getView(viewId);
         tv.setText(value);
+        return this;
+    }
+
+    public CommonRecyclerVH setImage(int viewId, String url){
+        SimpleDraweeView simpleDraweeView = (SimpleDraweeView) getView(viewId);
+        simpleDraweeView.setImageURI(url);
         return this;
     }
 
