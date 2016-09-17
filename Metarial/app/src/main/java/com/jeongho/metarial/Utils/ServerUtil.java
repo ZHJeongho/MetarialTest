@@ -143,6 +143,40 @@ public class ServerUtil {
                 });
     }
 
+    public static void getBicycleDetail(String bikeId, String token, final OnStringCallback onStringCallback){
+        OkHttpUtils.post()
+                .url(UrlUtil.getBicycleDetails(bikeId))
+                .addHeader(HEADER_AUTH, token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        onStringCallback.onError(call, e, id);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        onStringCallback.onSuccess(response, id);
+                    }
+                });
+    }
+
+    public static void getBicycleDetail(String bikeId, final OnStringCallback onStringCallback){
+        OkHttpUtils.post()
+                .url(UrlUtil.getBicycleDetails(bikeId))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        onStringCallback.onError(call, e, id);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        onStringCallback.onSuccess(response, id);
+                    }
+                });
+    }
 
 
     public interface OnStringCallback {

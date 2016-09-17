@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         initView(savedInstanceState);
@@ -95,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mToolbar.inflateMenu(R.menu.menu_home);
         mToolbar.setOnMenuItemClickListener(this);
         setSupportActionBar(mToolbar);
-
         mSharedPreferencesUtil = new SharedPreferencesUtil(
                 QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
 

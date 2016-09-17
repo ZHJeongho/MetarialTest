@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +20,6 @@ import com.jeongho.metarial.Utils.ServerUtil;
 import com.jeongho.metarial.adapter.CommonRecyclerAdapter;
 import com.jeongho.metarial.adapter.CommonRecyclerVH;
 import com.jeongho.metarial.bean.BicycleListBean;
-import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -31,36 +30,40 @@ import okhttp3.Call;
 /**
  * Created by Jeongho on 2016/9/7.
  */
-public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener {
+public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int INIT_BICYCLE_LIST = 0x01;
+    //下拉刷新
+    private static final int REFRESH_BICYCLE_LIST = 0x01;
+    //上拉加载
+    private static final int MORE_BICYCLE_LIST = 0x02;
     private Toolbar mToolbar;
     private RecyclerView mContentRv;
+    private SwipeRefreshLayout mContentSrl;
     private CommonRecyclerAdapter<BicycleListBean.BicycleBean> mRecyclerAdapter;
     private List<BicycleListBean.BicycleBean> mBicycleBeanList = new LinkedList<>();
 
-    private Button mAddItemsBtn;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == INIT_BICYCLE_LIST){
+            if (msg.what == REFRESH_BICYCLE_LIST){
                 Log.d("temp size", mTempList.size() + "");
+                if (mContentSrl.isRefreshing()){
+                    mContentSrl.setRefreshing(false);
+                }
                 initBicycle();
             }
         }
     };
 
     private void initBicycle() {
-        //mRecyclerAdapter.notifyItemRangeInserted(0, 20);
-        mBicycleBeanList.addAll(mTempList);
-        mRecyclerAdapter.notifyDataSetChanged();
-        //mRecyclerAdapter.notifyItemRangeInserted(mContentRv.getChildCount(), mTempList.size());
+        mRecyclerAdapter.refreshNewData(mTempList);
     }
 
     @Override
     public void initView() {
         mContentRv = (RecyclerView) findViewById(R.id.rv_bicycle);
-        mAddItemsBtn = (Button) findViewById(R.id.btn_add_items);
+        mContentSrl = (SwipeRefreshLayout) findViewById(R.id.srl_bicycle);
+        mContentSrl.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorPrimaryLight, R.color.colorAccent);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             mToolbar.setTitle(R.string.bicycle);
@@ -78,13 +81,20 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
             public void bindViewHolder(CommonRecyclerVH holder, int position) {
                 holder.setText(R.id.tv_model, mBicycleBeanList.get(position).getModel());
                 holder.setImage(R.id.sdv_bicycle_image, mBicycleBeanList.get(position).getPic1());
-                holder.setText(R.id.tv_type, mBicycleBeanList.get(position).getBrand());
-                holder.setText(R.id.tv_price,  "¥"+ mBicycleBeanList.get(position).getPrice());
+                holder.setText(R.id.tv_type, mBicycleBeanList.get(position).getBikeType());
+                String price = mBicycleBeanList.get(position).getPrice();
+                if (price == "null" || price == null){
+                    holder.setText(R.id.tv_price, getResources().getString(R.string.no_price));
+                }else {
+                    holder.setText(R.id.tv_price, "¥" + price);
+                }
+
             }
 
             @Override
             public void onItemViewClick(View v, int position) {
-                ToastUtil.showShort(EquipmentListActivity.this, "" + position);
+                String bikeId = mRecyclerAdapter.getItem(position).getBikeId();
+                EquipmentDetailsAty.startAction(EquipmentListActivity.this, bikeId);
             }
         });
 
@@ -105,6 +115,7 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
             @Override
             public void onSuccess(String response, int id) {
                 Log.d("bicycle List", response);
+                //TODO: 存缓存
                 Type type = new TypeToken<BicycleListBean>(){}.getType();
                 Gson gson = new Gson();
 
@@ -114,7 +125,7 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
                     case "200":
                         mTempList = bicycleList.bikes;
                         Message msg = Message.obtain();
-                        msg.what = INIT_BICYCLE_LIST;
+                        msg.what = REFRESH_BICYCLE_LIST;
                         mHandler.sendMessage(msg);
                         break;
                     case "300":
@@ -134,7 +145,7 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
             }
         });
         mToolbar.setOnMenuItemClickListener(this);
-        mAddItemsBtn.setOnClickListener(this);
+        mContentSrl.setOnRefreshListener(this);
     }
 
     @Override
@@ -158,10 +169,8 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btn_add_items){
-            String id = mTempList.get(mTempList.size() - 1).getBikeId();
-            getBicycleData(id);
-        }
+    public void onRefresh() {
+        String bikeId = mTempList.get(mTempList.size() - 1).getBikeId();
+        getBicycleData(bikeId);
     }
 }

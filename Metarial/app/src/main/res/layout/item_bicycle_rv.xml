@@ -22,7 +22,7 @@
             <TextView
                 android:id="@+id/tv_model"
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:padding="8dp"

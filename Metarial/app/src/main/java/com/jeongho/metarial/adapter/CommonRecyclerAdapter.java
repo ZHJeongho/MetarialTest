@@ -52,44 +52,22 @@ public class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecycle
         return mList.size();
     }
 
+    public T getItem(int position){
+        return mList.get(position);
+    }
 
-    //    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//
-//        private SparseArray<View> mViewSparseArray;
-//        private View mItemView;
-//
-//        public ViewHolder(View itemView) {
-//            super(itemView);
-//            mItemView = itemView;
-//            mViewSparseArray = new SparseArray<>();
-//        }
-//
-//        public View getView(int viewId){
-//            View view = mViewSparseArray.get(viewId);
-//            if (view == null){
-//                view = mItemView.findViewById(viewId);
-//                mViewSparseArray.put(viewId, view);
-//            }
-//            return view;
-//        }
-//
-//        public ViewHolder setText(int viewId, String value){
-//            TextView tv = (TextView) getView(viewId);
-//            tv.setText(value);
-//            return this;
-//        }
-//
-//        public ViewHolder addClickListener(int viewId){
-//            View v = getView(viewId);
-//            v.setOnClickListener(this);
-//            return this;
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            mBindViewHolder.onViewClick(v);
-//        }
-//    }
+    public void addMoreDatas(List<T> moreDatas){
+        int positionStart = mList.size();
+        mList.addAll(moreDatas);
+        notifyItemRangeInserted(positionStart, moreDatas.size());
+    }
+
+
+    public void refreshNewData(List<T> newDatas){
+        mList.addAll(newDatas);
+        notifyItemRangeInserted(0, newDatas.size());
+    }
+
 
     public interface OnBindViewHolder{
         void bindViewHolder(CommonRecyclerVH holder, int position);

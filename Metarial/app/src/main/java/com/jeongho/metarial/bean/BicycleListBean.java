@@ -22,6 +22,9 @@ public class BicycleListBean {
         private String roadType;
         private String level;
 
+        public BicycleBean() {
+        }
+
         public String getBikeId() {
             return bikeId;
         }

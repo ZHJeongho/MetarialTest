@@ -37,4 +37,5 @@
     <string name="clean_cache">清除缓存</string>
     <string name="version_update">版本更新</string>
     <string name="about_qxb">关于我们</string>
+    <string name="no_price">暂无参考价格</string>
 </resources>

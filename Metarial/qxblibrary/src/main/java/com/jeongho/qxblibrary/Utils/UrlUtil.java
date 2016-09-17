@@ -38,4 +38,8 @@ public class UrlUtil {
     public static String getBicycleList(){
         return ADDRESS + "/bike/list";
     }
+
+    public static String getBicycleDetails(String bikeId){
+        return ADDRESS + "/bike/detail/" + bikeId;
+    }
 }

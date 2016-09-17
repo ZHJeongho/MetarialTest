@@ -59,7 +59,6 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Daytime"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -87,8 +86,8 @@
         <activity android:name=".activity.SearchAty"/>
         <activity android:name=".activity.RideBookListActivity"/>
         <activity android:name=".activity.RideClubDetailsActivity"/>
-        <activity
-            android:name=".activity.EquipmentListActivity"/>
+        <!-- 整车 -->
+        <activity android:name=".activity.EquipmentListActivity"/>
         <activity android:name=".activity.EquipmentDetailsAty"/>
         <activity android:name=".activity.MyCollectActivity"/>
         <activity android:name=".activity.MyAttentionActivity"/>
