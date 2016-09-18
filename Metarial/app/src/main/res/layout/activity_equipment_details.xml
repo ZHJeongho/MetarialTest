@@ -1,12 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <include layout="@layout/toolbar"/>
-    <Button
+
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_below="@id/layout_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="50dp"
-        android:text="haha"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/backgroundPrimary"
+                android:elevation="4dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_brand"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/colorDivider"
+                app:civ_border_width="1dp"/>
+
+            <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:layout_toRightOf="@id/civ_brand"
+                android:gravity="center_vertical"
+                android:text="GIANT"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:text="1234元"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/civ_brand"
+                android:background="@drawable/card_bg"/>
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/iv"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_type"/>
+
+            <TextView
+                android:id="@+id/tv_type_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_type"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_type"/>
+
+            <TextView
+                android:id="@+id/tv_model"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_type"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_model"/>
+
+            <TextView
+                android:id="@+id/tv_model_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_model"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_type"/>
+            <TextView
+                android:id="@+id/tv_color"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_model"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_color"/>
+
+            <TextView
+                android:id="@+id/tv_color_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_color"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_type"/>
+            <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_color"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_size"/>
+
+            <TextView
+                android:id="@+id/tv_size_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_size"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_type"/>
+            <TextView
+                android:id="@+id/tv_road_type"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_size"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_road_type"/>
+
+            <TextView
+                android:id="@+id/tv_road_type_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_road_type"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+
+            <TextView
+                android:id="@+id/tv_series"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_road_type"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_series"/>
+
+            <TextView
+                android:id="@+id/tv_series_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_series"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+
+            <TextView
+                android:id="@+id/tv_level"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_series"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_level"/>
+
+            <TextView
+                android:id="@+id/tv_level_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_level"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+
+            <TextView
+                android:id="@+id/tv_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_level"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_frame"/>
+
+            <TextView
+                android:id="@+id/tv_frame_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_frame"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+
+            <TextView
+                android:id="@+id/tv_lever"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_frame"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_frame"/>
+
+            <TextView
+                android:id="@+id/tv_lever_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_lever"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+
+            <TextView
+                android:id="@+id/tv_wheel_system_param"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@id/tv_lever"
+                android:layout_marginLeft="24dp"
+                android:gravity="center_vertical"
+                android:text="@string/bicycle_frame"/>
+
+            <TextView
+                android:id="@+id/tv_wheel_system_param_content"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_wheel_system_param"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"
+                android:text="铺设道路"/>
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_below="@id/tv_wheel_system_param"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:elevation="4dp"
+                android:background="@color/backgroundPrimary">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

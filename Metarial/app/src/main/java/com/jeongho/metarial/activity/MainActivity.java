@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +35,7 @@ import com.jeongho.metarial.login.view.LoginActivity;
 import com.jeongho.metarial.login.view.LoginCallback;
 import com.jeongho.metarial.widge.SnackUtil;
 import com.jeongho.qxblibrary.Utils.SharedPreferencesUtil;
+import com.jeongho.qxblibrary.Utils.ToastUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
@@ -42,7 +44,7 @@ import okhttp3.Call;
  * 主界面
  * Created by Jeongho on 2016/6/16.
  */
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, LoginCallback {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, LoginCallback {
 
     public static final int REQUEST_LOGIN = 0x01;
     public static final int RESULT_LOGIN = 0x01;
@@ -95,7 +97,20 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         mToolbar.inflateMenu(R.menu.menu_home);
-        mToolbar.setOnMenuItemClickListener(this);
+//        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.action_notification:
+//                        Log.d("Menu", "notification");
+//                        break;
+//                    case R.id.action_search:
+//                        Log.d("Menu", "search");
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
         setSupportActionBar(mToolbar);
         mSharedPreferencesUtil = new SharedPreferencesUtil(
                 QxbApplication.getInstance(), SharedPreferencesUtil.USER_DATA);
@@ -122,19 +137,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.add(R.id.content_frame, mMainFragment);
         transaction.commit();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_notification:
-                Log.d("Menu", "notification");
-                break;
-            case R.id.action_search:
-                Log.d("Menu", "search");
-                break;
-        }
-        return false;
     }
 
     @Override
@@ -365,5 +367,25 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public static void startAction(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_notification:
+                ToastUtil.showShort(this, "notification");
+                break;
+            case R.id.action_search:
+                ToastUtil.showShort(this, "search");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

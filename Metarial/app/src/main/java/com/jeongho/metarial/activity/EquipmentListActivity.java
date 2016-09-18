@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -70,6 +71,7 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
             mToolbar.inflateMenu(R.menu.menu_home);
             setSupportActionBar(mToolbar);
             mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -138,12 +140,12 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
 
     @Override
     public void initListener() {
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.startAction(EquipmentListActivity.this);
-            }
-        });
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MainActivity.startAction(EquipmentListActivity.this);
+//            }
+//        });
         mToolbar.setOnMenuItemClickListener(this);
         mContentSrl.setOnRefreshListener(this);
     }
@@ -172,5 +174,16 @@ public class EquipmentListActivity extends BaseActivity implements Toolbar.OnMen
     public void onRefresh() {
         String bikeId = mTempList.get(mTempList.size() - 1).getBikeId();
         getBicycleData(bikeId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
